@@ -1,0 +1,63 @@
+server:
+  port: 8095
+
+# rabbitMQ的自动化配置
+spring:
+  aop:
+    proxy-target-class: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    # 开启发布者确认
+    publisher-confirms: true
+    publisher-returns: true
+    template:
+      mandatory: true
+      # 当rabbitTemplate发送消息没指定exchange时默认的exchange,未配置时默认为空串
+      exchange: defaultExchange
+      # 当rabbitTemplate发送消息没指定routingKey时默认的routingKey,未配置时默认为空串
+      routing-key: defaultRoutingKey
+      retry:
+        # 开启发布重试机制
+        enabled: true
+        max-attempts: 3
+        max-interval: 10000ms
+        initial-interval: 1000ms
+        multiplier: 1
+    cache:
+      connection:
+        # 默认为channel;size默认为1(只在connection下有效)
+        mode: channel
+    listener:
+      simple:
+        acknowledge-mode: manual
+        # size: 1
+        # reply-timeout: # sendAndReceive()方法的超时时间
+        # receive-timeout: # receive()方法的超时时间
+#   template:
+#     # 1、mandatory标志位：当mandatory标志位设置为true时,如果exchange根据自身类型和消息routeKey无法找到一个符合条件的queue,
+#     #   那么会调用basic.return方法将消息返还给生产者;当mandatory设为false时,出现上述情形broker会直接将消息扔掉。
+#     # 2、immediate标志位：当immediate标志位设置为true时,如果exchange在将消息route到queue(s)时发现对应的queue上没有消费者,
+#     #   那么这条消息不会放入队列中,当与消息routeKey关联的所有queue(一个或多个)都没有消费者时,该消息会通过basic.return方法返还给生产者。
+#     # 在RabbitMQ3.0以后的版本里,去掉了immediate参数支持,发送带immediate标记的publish会返回如下错误:"{amqp_error,not_implemented,"immediate=true",'basic.publish'}"
+#     mandatory: false
+#   listener:
+#     simple:
+#       auto-startup: true
+#       acknowledge-mode: manual
+#       # 每个监听并发消费者的线程数与最大并发消息者监听线程数
+#       concurrency: 2
+#       max-concurrency: 5
+#   # 默认的exchange与routing-key名为空串
+#   # routing-key:
+#   # exchange:
+#   cache:
+#     connection:
+#       mode: channel
+#   listener:
+#     direct:
+#       auto-startup: true
+#       # manual:消息者消费消息后必须要回执,RabbitMQ收到消息回执会从Queue中移除掉这个消息
+#       acknowledge-mode: manual

@@ -1,0 +1,39 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.2.31'
+        springBootVersion = '2.0.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+        classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+    }
+}
+
+// 所有项目都继承这个配置
+allprojects {
+    repositories {
+        // 加入maven仓库时，Gradle提供了三种可供直接使用：
+        // mavenCentral() 表示依赖是从Central Maven 2仓库中获取的
+        // jcenter() 表示依赖是从Bintary's JCenter Maven仓库中获取的
+        // mavenLocal() 表示依赖是从本地的Maven仓库中获取的
+        mavenCentral()
+        jcenter()
+
+        // 这意味着项目将在lib目录下搜索依赖
+        /*
+        flatDir{
+            dirs 'lib'
+        }
+        */
+    }
+}
+
+// Gradle任务
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
