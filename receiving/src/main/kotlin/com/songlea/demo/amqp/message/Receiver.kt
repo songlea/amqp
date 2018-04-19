@@ -33,9 +33,9 @@ class Receiver {
     @RabbitHandler()
     // 一个Message有两个部分：payload(有效载荷)和label(标签), payload顾名思义就是传输的数据
     // label是exchange的名字或者说是一个tag,它描述了payload,而且RabbitMQ也是通过这个label来决定把这个Message发给哪个Consumer
-    fun handleMessage(/* @Payload data:String */ message: Message, channel: Channel) {
-        val receiverData: List<Student> = JSON.parseArray(message.body.toString(Charsets.UTF_8), Student::class.java)
-        if (Math.random() > 0.5) {
+    fun handlePublishMessage(/* @Payload data:String */ message: Message, channel: Channel) {
+        val receiverData: List<Student>? = JSON.parseArray(message.body?.toString(Charsets.UTF_8), Student::class.java)
+        if (Math.random() > 0.5 && receiverData != null) {
             // requeue 值为 true 表示该消息重新放回队列头,值为 false 表示放弃这条消息
             // channel.basicReject(message.messageProperties.deliveryTag, true)
             channel.basicNack(message.messageProperties.deliveryTag, false, true)
@@ -52,12 +52,10 @@ class Receiver {
     @RabbitListener(queues = [AmqpReceivingApplication.RPC_QUEUE_NAME])
     @RabbitHandler()
     fun handleRpcMessage(message: Message, channel: Channel): String {
-        val receiverData = JSON.parseObject(message.body.toString(Charsets.UTF_8), Student::class.java)
+        val receiverData: Student? = JSON.parseObject(message.body?.toString(Charsets.UTF_8), Student::class.java)
         LOGGER.info("Received rpc data: < $receiverData > & remove!")
-        // 消息返回类型为JSON，否则生产者接收时异常
-        // java.lang.ClassCastException: [B cannot be cast to java.lang.String
         message.messageProperties.contentType = MessageProperties.CONTENT_TYPE_JSON
-        return ReceiverUtils.toJSONString(RpcResponse(0, "Received rpc & return data"))
+        return "Received rpc & return data"
     }
 
     /*
