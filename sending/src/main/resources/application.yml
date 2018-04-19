@@ -16,9 +16,9 @@ spring:
     template:
       mandatory: true
       # 当rabbitTemplate发送消息没指定exchange时默认的exchange,未配置时默认为空串
-      exchange: defaultExchange
+      # exchange: defaultExchange
       # 当rabbitTemplate发送消息没指定routingKey时默认的routingKey,未配置时默认为空串
-      routing-key: defaultRoutingKey
+      # routing-key: defaultRoutingKey
       retry:
         # 开启发布重试机制
         enabled: true

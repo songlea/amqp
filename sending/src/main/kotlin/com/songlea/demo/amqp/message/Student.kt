@@ -7,7 +7,7 @@ import java.io.Serializable
  *
  * @author Song Lea
  */
-class Student(var id: Int, var name: String) : Serializable {
+class Student(private var id: Int, private var name: String) : Serializable {
 
     override fun toString(): String {
         return "Student(id=$id, name='$name')"
