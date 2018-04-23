@@ -22,10 +22,12 @@ compileTestKotlin {
     }
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
+/*
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+    main.java.srcDirs += 'src/main/java'
 }
+*/
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-amqp')

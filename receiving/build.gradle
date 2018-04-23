@@ -22,11 +22,6 @@ compileTestKotlin {
     }
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
-}
-
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-amqp')
     compile('org.springframework.boot:spring-boot-starter-web')
