@@ -1,3 +1,8 @@
+ext {
+    // 统一各子模块的第三方jar包的版本号,在子模块中使用$rootProject.xxx来引用
+    fastJsonVersion = '1.2.47'
+}
+
 buildscript {
     ext {
         kotlinVersion = '1.2.31'
@@ -17,7 +22,7 @@ buildscript {
 // 所有项目都继承这个配置
 allprojects {
     repositories {
-        // 加入maven仓库时，Gradle提供了三种可供直接使用：
+        // 加入maven仓库时,Gradle提供了三种可供直接使用：
         // mavenCentral() 表示依赖是从Central Maven 2仓库中获取的
         // jcenter() 表示依赖是从Bintary's JCenter Maven仓库中获取的
         // mavenLocal() 表示依赖是从本地的Maven仓库中获取的

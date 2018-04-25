@@ -28,7 +28,14 @@ dependencies {
     compile('com.fasterxml.jackson.module:jackson-module-kotlin')
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
-    // https://mvnrepository.com/artifact/com.alibaba/fastjson
-    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.47'
+    compile group: 'com.alibaba', name: 'fastjson', version: "$rootProject.fastJsonVersion" // 版本引用必须用又引号
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+// 指定源代码目录
+/*
+sourceSets {
+    main.kotlin.srcDirs += 'src/main/kotlin'
+    main.java.srcDirs += 'src/main/java'
+}
+*/
