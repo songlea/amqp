@@ -8,7 +8,6 @@ import org.springframework.amqp.rabbit.support.CorrelationData
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.EnableScheduling
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,9 +16,7 @@ import java.util.*
 @Component
 class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
 
-    companion object {
-        val LOGGER: Logger = LoggerFactory.getLogger(ScheduleSender::class.java)
-    }
+    private val logger: Logger = LoggerFactory.getLogger(ScheduleSender::class.java)
 
     init {
         rabbitTemplate.apply {
@@ -40,9 +37,9 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
                     // 如果想要发布者与消费者之间的紧密耦合，可以使用Spring Remoting(RPC) Over RabbitMQ，这时消费者引发异常，
                     // 它将被传播回发布者。(该机制仅支持Java Serializable对象)
                     if (ack)
-                        LOGGER.info("Message【CorrelationData.id：${correlationData.id}】成功到达Exchange")
+                        logger.info("Message【CorrelationData.id：${correlationData.id}】成功到达Exchange")
                     else
-                        LOGGER.info("Message【CorrelationData.id：${correlationData.id}】未到达Exchange：$cause")
+                        logger.info("Message【CorrelationData.id：${correlationData.id}】未到达Exchange：$cause")
                 }
             })
 
@@ -55,7 +52,7 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
             this.setReturnCallback { message, replyCode, replyText,
                                      exchange, routingKey ->
                 run {
-                    LOGGER.info("Exchange无对应的RoutingKey到Queue时回调：" +
+                    logger.info("Exchange无对应的RoutingKey到Queue时回调：" +
                             "message:$message text: $replyText code: $replyCode exchange: $exchange routingKey :$routingKey")
                 }
             }
@@ -68,7 +65,7 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
         }
     }
 
-    @Scheduled(cron = "0/40 * * * * ?")
+    // @Scheduled(cron = "0/40 * * * * ?")
     fun sendMessage() {
         val date: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         /**
@@ -83,13 +80,13 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
         val publishData: List<Student> = listOf(Student(1, "publish_${Math.random()}"))
         rabbitTemplate.convertAndSend(AmqpSendingApplication.TOPIC_EXCHANGE_NAME,
                 AmqpSendingApplication.CONFIRM_CALLBACK_ROUTING_KEY, publishData, CorrelationData(publishConfirmId))
-        LOGGER.info("Sending publish message @ $date，correlationData.id：$publishConfirmId ，data：$publishData")
+        logger.info("Sending publish message @ $date，correlationData.id：$publishConfirmId ，data：$publishData")
 
         // 会有confirmCallback回调与returnCallback回调(因为消息能到达Exchange但无法路由到对应的Queue)
         val returnId = UUID.randomUUID().toString()
         rabbitTemplate.convertAndSend(AmqpSendingApplication.TOPIC_EXCHANGE_NAME,
                 AmqpSendingApplication.RETURN_CALLBACK_ROUTING_KEY, "noneTest", CorrelationData(returnId))
-        LOGGER.info("Sending publish message @ $date，id：$returnId，but no routingKey to queue.")
+        logger.info("Sending publish message @ $date，id：$returnId，but no routingKey to queue.")
 
         /**
          * 发送消息(RPC)参数
@@ -107,6 +104,6 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
         // 这里返回的String无法被Jackson2JsonMessageConverter转换成json,自己解析成String并处理
         // RabbitMQ的RPC模式的机制暂只支持Java Serializable对象
         val response: String? = (ret as? ByteArray)?.toString(Charsets.UTF_8) ?: ret?.toString()
-        LOGGER.info("Sending rpc message @ $date & return: $response")
+        logger.info("Sending rpc message @ $date & return: $response")
     }
 }

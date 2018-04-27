@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>主页</title>
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrap-3.3.7/css/bootstrap.min.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/artDialog4.1.7/skins/black.css}"/>
+</head>
+<body>
+<input type="hidden" id="urlPath" th:value="${#httpServletRequest.getContextPath()}"/>
+<div class="container-fluid">
+    <div class="pull-right h3">
+        <span class="glyphicon glyphicon-user"></span> 欢迎您：
+        <span th:text="${@loginController.getDefaultUser()}"></span>&nbsp;&nbsp;
+        <a href="javascript:void(0)" id="logoutBtn">退出</a>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/plugins/jquery-1.10.2.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/bootstrap-3.3.7/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/artDialog4.1.7/artDialog.js}"></script>
+<script type="text/javascript" th:src="@{/js/home.js}"></script>
+</body>
+</html>
