@@ -28,4 +28,18 @@ $(function () {
         });
     });
 
+    // 发送消息
+    $('#test').click(function () {
+        $.ajax({
+            dataType: "json",
+            type: 'POST',
+            url: urlPath + "/home/chat",
+            data: {
+                "message": "幽幽xxcccccccccccc"
+            },
+            success: function (data) {
+                alert(data.message)
+            }
+        });
+    });
 });

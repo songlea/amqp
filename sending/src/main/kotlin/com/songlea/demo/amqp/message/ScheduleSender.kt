@@ -8,12 +8,13 @@ import org.springframework.amqp.rabbit.support.CorrelationData
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.text.SimpleDateFormat
 import java.util.*
 
-@EnableScheduling
 @Component
+@EnableScheduling
 class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
 
     private val logger: Logger = LoggerFactory.getLogger(ScheduleSender::class.java)
@@ -65,8 +66,17 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
         }
     }
 
-    // @Scheduled(cron = "0/40 * * * * ?")
-    fun sendMessage() {
+    // 发送即时聊天的数据(暂存到RabbitMQ中待消费)
+    fun sendChatMessage(message: String) {
+        val id: String = UUID.randomUUID().toString()
+        rabbitTemplate.convertAndSend(AmqpSendingApplication.CHAT_EXCHANGE_NAME,
+                AmqpSendingApplication.CHAT_ROUTING_KEY_SONG, message, CorrelationData(id))
+        logger.info("发送消息【$message】【id:$id】到队列中成功...")
+    }
+
+    // 发布/订阅模式
+    @Scheduled(cron = "0 0 1 * * ?")
+    fun sendPublishMessage() {
         val date: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         /**
          * 发送消息(publish)参数
@@ -87,12 +97,17 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
         rabbitTemplate.convertAndSend(AmqpSendingApplication.TOPIC_EXCHANGE_NAME,
                 AmqpSendingApplication.RETURN_CALLBACK_ROUTING_KEY, "noneTest", CorrelationData(returnId))
         logger.info("Sending publish message @ $date，id：$returnId，but no routingKey to queue.")
+    }
 
+    // RPC模式
+    @Scheduled(cron = "0 0 3 * * ?")
+    fun sendRpcMessage() {
+        val date: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         /**
          * 发送消息(RPC)参数
          * exchange:交换机名称
          * routingKey:路由关键字
-         * message:发送的消息
+         * message:发送的消息(必须是java序列化的对象)
          * messagePostProcessor:消息发送前的处理器
          * correlationData:消息发布者确认的关联数据(ID)
          * responseType:回复数据的转换类型

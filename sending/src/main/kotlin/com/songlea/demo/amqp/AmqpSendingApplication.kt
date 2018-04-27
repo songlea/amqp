@@ -30,6 +30,12 @@ class AmqpSendingApplication {
         const val RPC_QUEUE_NAME = "spring-boot-rpc-queue"
         const val RPC_ROUTING_KEY = "spring.boot.rpc"
         const val RETURN_CALLBACK_ROUTING_KEY = "testReturnCallbackRoutingKey"
+
+        // 保存界面发送的未消费的消息
+        const val CHAT_EXCHANGE_NAME = "chat-exchange"
+        const val CHAT_QUEUE_NAME = "chat-queue"
+        const val CHAT_ROUTING_KEY = "chat.topic.#"
+        const val CHAT_ROUTING_KEY_SONG = "chat.topic.song"
     }
 
     @Bean

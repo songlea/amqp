@@ -8,12 +8,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class MyWebMvcConfigurer(@Autowired private val loginInterceptor: LoginInterceptor) : WebMvcConfigurer {
 
+    // 添加拦截器
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loginInterceptor)
-                // 需要拦截的请求
+                // 匹配需要拦截的请求(优化级 > excludePath)
                 .addPathPatterns("/home/*")
-                // 不拦截的请求(登录界面请求)
+                // 匹配不拦截的请求(登录界面请求)
                 .excludePathPatterns("/login/*")
     }
-
 }

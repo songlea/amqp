@@ -10,12 +10,17 @@
 </head>
 <body>
 <input type="hidden" id="urlPath" th:value="${#httpServletRequest.getContextPath()}"/>
-<div class="container-fluid">
+<div class="container">
     <div class="pull-right h3">
         <span class="glyphicon glyphicon-user"></span> 欢迎您：
         <span th:text="${@loginController.getDefaultUser()}"></span>&nbsp;&nbsp;
         <a href="javascript:void(0)" id="logoutBtn">退出</a>
     </div>
+    <div style="margin-top: 60px;">
+        <span class="glyphicon glyphicon-user"></span><span id="time">2018-05-22</span>
+        <div class="well">这是一名稆无可奈何 地大梦幻标有大规模 44444444fasdsddddddddd这是一名稆无可奈何 地大梦幻标有大规模 44444444fasdsddddddddd这是一名稆无可奈何 地大梦幻标有大规模 44444444fasdsddddddddd这是一名稆无可奈何 地大梦幻标有大规模 44444444fasdsddddddddd</div>
+    </div>
+    <button type="button" class="btn btn-primary" id="test">发送</button>
 </div>
 <script type="text/javascript" th:src="@{/plugins/jquery-1.10.2.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/bootstrap-3.3.7/js/bootstrap.min.js}"></script>

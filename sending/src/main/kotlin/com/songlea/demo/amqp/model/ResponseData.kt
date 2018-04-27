@@ -1,9 +1,16 @@
 package com.songlea.demo.amqp.model
 
+/**
+ * 封装返回响应数据与定义常量
+ *
+ * @author Song Lea
+ */
 data class ResponseData(var code: Int, var message: String?, var url: String?, var data: Any?) {
 
     companion object {
         const val SUCCESS = "操作成功！"
+        const val LOGIN_PAGE_ERROR_CODE = 1
+        const val HOME_PAGE_ERROR_CODE = 2
         // 登录界面
         const val LOGIN_URL = "/login/index"
         const val VERIFICATION_CODE_NAME = "VerificationCode"
@@ -14,13 +21,14 @@ data class ResponseData(var code: Int, var message: String?, var url: String?, v
         const val NO_VERIFICATION_CODE = "请输入验证码！"
         const val ERROR_VERIFICATION_CODE = "验证码不正确！"
         const val ERROR_USER_OR_PASSWORD = "用户名或密码不正确！"
+        // 主页
+        const val NO_MESSAGE = "不能发送空白信息"
         // Cookie设置
         const val COOKIE_NAME = "SongLea-Cookie"
         const val COOKIE_COMMENT = "Login Cookie"
         const val COOKIE_PATH = "/"
         const val COOKIE_HTTP_ONLY = true
-        // 当为true时只有安全请求(如https)时Cookie才发送到后台
-        const val COOKIE_SECURE = false
+        const val COOKIE_SECURE = false  // 当为true时只有安全请求(如https)时Cookie才发送到后台
         const val COOKIE_MAX_AGE = 30 * 60
     }
 
