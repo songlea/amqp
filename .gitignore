@@ -169,15 +169,3 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-receiving/src/main/java/
-receiving/src/main/resources/static/
-receiving/src/main/resources/templates/
-receiving/src/test/java/
-receiving/src/test/resources/
-sending/src/main/java/
-sending/src/main/resources/static/
-sending/src/main/resources/templates/
-sending/src/test/java/
-sending/src/test/resources/
