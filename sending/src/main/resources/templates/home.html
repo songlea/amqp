@@ -7,6 +7,7 @@
     <title>主页</title>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrap-3.3.7/css/bootstrap.min.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/artDialog4.1.7/skins/black.css}"/>
+    <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.css}">
 </head>
 <body>
 <input type="hidden" id="urlPath" th:value="${#httpServletRequest.getContextPath()}"/>
@@ -16,15 +17,32 @@
         <span th:text="${@loginController.getDefaultUser()}"></span>&nbsp;&nbsp;
         <a href="javascript:void(0)" id="logoutBtn">退出</a>
     </div>
-    <div style="margin-top: 60px;">
-        <span class="glyphicon glyphicon-user"></span><span id="time">2018-05-22</span>
-        <div class="well">这是一名稆无可奈何 地大梦幻标有大规模 44444444fasdsddddddddd这是一名稆无可奈何 地大梦幻标有大规模 44444444fasdsddddddddd这是一名稆无可奈何 地大梦幻标有大规模 44444444fasdsddddddddd这是一名稆无可奈何 地大梦幻标有大规模 44444444fasdsddddddddd</div>
+    <!--
+        input-group:通过在文本输入框 <input> 前面、后面或是两边加上文字或按钮，可以实现对表单控件的扩展。
+            为 .input-group 赋予 .input-group-addon 或 .input-group-btn 类，可以给 .form-control 的前面或后面添加额外的元素;
+        form-control:所有设置了 .form-control 类的 <input>、<textarea> 和 <select> 元素都将被默认设置宽度属性为 width: 100%;
+        form-group:将 label 元素和 .form-control控件包裹在 .form-group 中可以获得最好的排列;
+        form-inline:在内联表单，我们将这些元素的宽度设置为 width: auto;
+    -->
+    <div class="row" style="margin-top: 60px;">
+        <form id="sendMessageForm" class="form-horizontal">
+            <div class="form-group">
+                <label class="sr-only control-label" for="message">Message</label>
+                <input type="text" class="form-control" name="message" id="message" title="请输入消息内容..." value=""
+                       placeholder="请输入消息内容..."/>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" id="sendMessageBth">发送</button>
+            </div>
+        </form>
     </div>
-    <button type="button" class="btn btn-primary" id="test">发送</button>
 </div>
 <script type="text/javascript" th:src="@{/plugins/jquery-1.10.2.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/bootstrap-3.3.7/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/artDialog4.1.7/artDialog.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/bootstrapValidator-0.5.3/zh_CN.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jqueryForm-4.2.2/jquery.form.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/home.js}"></script>
 </body>
 </html>
