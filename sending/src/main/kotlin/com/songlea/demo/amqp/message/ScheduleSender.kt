@@ -1,11 +1,11 @@
 package com.songlea.demo.amqp.message
 
+import com.alibaba.fastjson.JSON
 import com.songlea.demo.amqp.AmqpSendingApplication
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.amqp.rabbit.support.CorrelationData
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
@@ -57,8 +57,8 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
                             "message:$message text: $replyText code: $replyCode exchange: $exchange routingKey :$routingKey")
                 }
             }
-            // 数据由json格式进行转换
-            this.messageConverter = Jackson2JsonMessageConverter()
+            // 数据由json格式进行转换(若使用json字符串则不需要转换成json对象)
+            // this.messageConverter = Jackson2JsonMessageConverter()
 
             // RPC调用时的接收数据与等待返回超时时间
             this.setReceiveTimeout(10_000) // 默认为0，此时是非阻塞的当没有可用的消息时返回null
@@ -75,7 +75,7 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
     }
 
     // 发布/订阅模式
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "0 0 3 * * ?")
     fun sendPublishMessage() {
         val date: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         /**
@@ -87,7 +87,8 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
          */
         // 会有confirmCallback回调(因为消息能到达Exchange)
         val publishConfirmId: String = UUID.randomUUID().toString()
-        val publishData: List<Student> = listOf(Student(1, "publish_${Math.random()}"))
+        val publishData: String = JSON.toJSONString(listOf(Student(1, "publish_${Math.random()}")))
+        // 将message转化为json字符串传递
         rabbitTemplate.convertAndSend(AmqpSendingApplication.TOPIC_EXCHANGE_NAME,
                 AmqpSendingApplication.CONFIRM_CALLBACK_ROUTING_KEY, publishData, CorrelationData(publishConfirmId))
         logger.info("Sending publish message @ $date，correlationData.id：$publishConfirmId ，data：$publishData")
@@ -100,7 +101,7 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
     }
 
     // RPC模式
-    @Scheduled(cron = "0 0 3 * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     fun sendRpcMessage() {
         val date: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
         /**
@@ -113,12 +114,12 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
          * responseType:回复数据的转换类型
          */
         val rpcConfirmId = UUID.randomUUID().toString()
-        val rpcData = Student(2, "rpc_${Math.random()}")
+        // 将message转化为json字符串传递
+        val rpcData: String = JSON.toJSONString(Student(2, "rpc_${Math.random()}"))
         val ret: Any? = rabbitTemplate.convertSendAndReceive(AmqpSendingApplication.RPC_EXCHANGE_NAME,
-                AmqpSendingApplication.RPC_ROUTING_KEY, rpcData, null, CorrelationData(rpcConfirmId))
-        // 这里返回的String无法被Jackson2JsonMessageConverter转换成json,自己解析成String并处理
-        // RabbitMQ的RPC模式的机制暂只支持Java Serializable对象
-        val response: String? = (ret as? ByteArray)?.toString(Charsets.UTF_8) ?: ret?.toString()
-        logger.info("Sending rpc message @ $date & return: $response")
+                AmqpSendingApplication.RPC_ROUTING_KEY, rpcData,
+                null, CorrelationData(rpcConfirmId))
+        // 不使用json转换器而用默认的转换器则直接返回的string字符串
+        logger.info("Sending rpc message @ $date & return: $ret")
     }
 }
