@@ -39,7 +39,7 @@ var LOGIN = function () {
                 url: urlPath + "/login/in",
                 data: $("#loginForm").serialize(),
                 success: function (data) {
-                    if (data && data.code === 0) {
+                    if (data.code === 0) {
                         // 登录成功跳转到主页
                         location.href = urlPath + "/home/index";
                     } else if (data) {
