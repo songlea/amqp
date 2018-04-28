@@ -25,7 +25,8 @@
         form-inline:在内联表单，我们将这些元素的宽度设置为 width: auto;
     -->
     <div class="row" style="margin-top: 60px;">
-        <form id="sendMessageForm" class="form-horizontal">
+        <!--阻止bootstrap表单默认Enter键提交-->
+        <form id="sendMessageForm" class="form-horizontal" onkeydown="if(event.keyCode===13)return false;">
             <div class="form-group">
                 <label class="sr-only control-label" for="message">Message</label>
                 <input type="text" class="form-control" name="message" id="message" title="请输入消息内容..." value=""
