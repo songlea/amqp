@@ -18,6 +18,8 @@ class AmqpReceivingApplication {
     companion object {
         const val TOPIC_QUEUE_NAME = "spring-boot-topic-queue"
         const val RPC_QUEUE_NAME = "spring-boot-rpc-queue"
+        // 界面发送的未消费的消息队列名
+        const val CHAT_QUEUE_NAME = "chat-queue"
     }
 }
 

@@ -9,19 +9,18 @@ import org.springframework.amqp.core.Message
 import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Component
 
 /**
- * 消息消费方
+ *息消费方
  *
  * @author Song Lea
  */
 @Component
 class Receiver {
 
-    companion object {
-        val LOGGER: Logger = LoggerFactory.getLogger(Receiver::class.java)
-    }
+    private val logger: Logger = LoggerFactory.getLogger(Receiver::class.java)
 
     // 详细的绑定,指定Queue、Exchange与RoutingKey的定义
     // @RabbitListener(bindings = (arrayOf(QueueBinding(value = Queue(value = AmqpApplication.QUEUE_NAME, durable = "true"),
@@ -33,29 +32,30 @@ class Receiver {
     @RabbitHandler()
     // 一个Message有两个部分：payload(有效载荷)和label(标签), payload顾名思义就是传输的数据
     // label是exchange的名字或者说是一个tag,它描述了payload,而且RabbitMQ也是通过这个label来决定把这个Message发给哪个Consumer
-    fun handlePublishMessage(/* @Payload data:String */ message: Message, channel: Channel) {
-        val receiverData: List<Student>? = JSON.parseArray(message.body?.toString(Charsets.UTF_8), Student::class.java)
+    fun handlePublishMessage(@Payload data: String?, message: Message, channel: Channel) {
+        val receiverData: List<Student>? = JSON.parseArray(data, Student::class.java)
         if (Math.random() > 0.5 && receiverData != null) {
             // requeue 值为 true 表示该消息重新放回队列头,值为 false 表示放弃这条消息
             // channel.basicReject(message.messageProperties.deliveryTag, true)
             channel.basicNack(message.messageProperties.deliveryTag, false, true)
-            LOGGER.info("Reject publish data: < $receiverData > & requeue!")
+            logger.info("Reject publish data: < $receiverData > & requeue!")
         } else {
             // 确认这个消息收到了会将其从队列中移除
             // multiple：如果为true则表示连续取得多条消息才会发确认,false则只确认当前消息,true能够提高效率
             channel.basicAck(message.messageProperties.deliveryTag, false)
-            LOGGER.info("Received publish data: < $receiverData > & remove!")
+            logger.info("Received publish data: < $receiverData > & remove!")
         }
     }
 
-    //RPC调用的消费者
+    // RPC调用的消费者
     @RabbitListener(queues = [AmqpReceivingApplication.RPC_QUEUE_NAME])
     @RabbitHandler()
-    fun handleRpcMessage(message: Message, channel: Channel): String {
-        val receiverData: Student? = JSON.parseObject(message.body?.toString(Charsets.UTF_8), Student::class.java)
-        LOGGER.info("Received rpc data: < $receiverData > & remove!")
+    fun handleRpcMessage(@Payload data: String?, message: Message, channel: Channel): String {
+        val receiverData: Student? = JSON.parseObject(data, Student::class.java)
+        logger.info("Received rpc data: < $receiverData > & remove!")
         message.messageProperties.contentType = MessageProperties.CONTENT_TYPE_JSON
-        return "Received rpc & return data"
+        // 消息消费成功后的返回数据
+        return "success"
     }
 
     /*
