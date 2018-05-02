@@ -28,7 +28,6 @@ allprojects {
         // mavenLocal() 表示依赖是从本地的Maven仓库中获取的
         mavenCentral()
         jcenter()
-        mavenLocal()
 
         // 这意味着项目将在lib目录下搜索依赖
         /*
