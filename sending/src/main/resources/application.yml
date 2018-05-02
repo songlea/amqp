@@ -1,3 +1,7 @@
+web:
+  # 定义上传的静态文件位置,以便静态资源映射
+  upload-path: G:/image/
+
 server:
   port: 8095
   servlet:
@@ -7,6 +11,8 @@ server:
 spring:
   aop:
     proxy-target-class: true
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
   # RabbitMQ的自动化配置
   rabbitmq:
     host: localhost

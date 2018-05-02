@@ -3,6 +3,7 @@ package com.songlea.demo.amqp.controller
 import com.songlea.demo.amqp.message.ScheduleSender
 import com.songlea.demo.amqp.model.ResponseData
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
@@ -23,6 +24,9 @@ import javax.servlet.http.HttpServletResponse
 @Controller
 @RequestMapping("/home")
 class HomeController(@Autowired private val scheduleSender: ScheduleSender) {
+
+    @Value("\${web.upload-path}")
+    private var filePath: String = ""
 
     // 主页
     @RequestMapping(value = ["/index"], method = [RequestMethod.GET])
@@ -46,7 +50,7 @@ class HomeController(@Autowired private val scheduleSender: ScheduleSender) {
         if (file == null || file.size <= 0)
             return ResponseData(ResponseData.HOME_PAGE_ERROR_CODE, ResponseData.NO_FILE)
         // 保存上传文件
-        FileOutputStream(File(ResponseData.PATH_NAME + file.originalFilename))
+        FileOutputStream(File(filePath + file.originalFilename))
                 .buffered().use {
                     it.write(file.bytes)
                 }
@@ -58,7 +62,7 @@ class HomeController(@Autowired private val scheduleSender: ScheduleSender) {
     fun download(response: HttpServletResponse, fileName: String?) {
         if (fileName.isNullOrBlank()) return
         response.outputStream.use {
-            it.write(FileInputStream(File(ResponseData.PATH_NAME + fileName)).readBytes())
+            it.write(FileInputStream(File(filePath + fileName)).readBytes())
         }
     }
 }
