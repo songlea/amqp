@@ -58,13 +58,13 @@ class LoginController {
     @RequestMapping(value = ["/out"], method = [RequestMethod.GET])
     fun signOut(request: HttpServletRequest, response: HttpServletResponse): String {
         val cookie = Cookie(ResponseData.COOKIE_NAME, request.session.id)
-        // 时间设置为0则在浏览器中删除
-        cookie.maxAge = 0
-        cookie.isHttpOnly = ResponseData.COOKIE_HTTP_ONLY
+        cookie.maxAge = 0  // 时间设置为0则在浏览器中删除
         cookie.path = ResponseData.COOKIE_PATH
+        cookie.isHttpOnly = ResponseData.COOKIE_HTTP_ONLY
         cookie.secure = ResponseData.COOKIE_SECURE
-        cookie.comment = ResponseData.COOKIE_COMMENT
         response.addCookie(cookie)
+        // 清除服务端相应request的session信息
+        request.session.invalidate()
         return "redirect:" + request.contextPath + ResponseData.LOGIN_URL
     }
 

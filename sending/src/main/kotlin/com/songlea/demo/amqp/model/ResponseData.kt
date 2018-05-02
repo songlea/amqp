@@ -26,11 +26,11 @@ data class ResponseData(var code: Int, var message: String?, var url: String?, v
         const val NO_FILE = "请选择上传文件"
         const val PATH_NAME = "G:\\"
         // Cookie设置
-        const val COOKIE_NAME = "SongLea-Cookie"
-        const val COOKIE_COMMENT = "Login Cookie"
+        const val COOKIE_NAME = "AMQP-COOKIE"
+        const val COOKIE_COMMENT = "My AMQP Application's Login Cookie Comment"
         const val COOKIE_PATH = "/"
         const val COOKIE_HTTP_ONLY = true
-        const val COOKIE_SECURE = false  // 当为true时只有安全请求(如https)时Cookie才发送到后台
+        const val COOKIE_SECURE = false
         const val COOKIE_MAX_AGE = 30 * 60
     }
 
