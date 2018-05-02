@@ -76,10 +76,10 @@ class LoginController {
         response.setHeader("Pragma", "no-cache")
         response.setHeader("Cache-Control", "no-cache")
         response.setDateHeader("Expires", 0)
-        val code = IdentifyCodeUtil(100, 30, 4, 10)
+        val codeUtil = IdentifyCodeUtil(100, 30, 4, 10)
         // 将验证码保存于Session中以便登录时验证
-        request.session.setAttribute(ResponseData.VERIFICATION_CODE_NAME, code.getCode())
-        code.write(response.outputStream)
+        request.session.setAttribute(ResponseData.VERIFICATION_CODE_NAME, codeUtil.getCode())
+        codeUtil.write(response.outputStream)
     }
 
     // 获取登录用户名

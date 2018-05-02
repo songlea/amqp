@@ -23,6 +23,8 @@ data class ResponseData(var code: Int, var message: String?, var url: String?, v
         const val ERROR_USER_OR_PASSWORD = "用户名或密码不正确！"
         // 主页
         const val NO_MESSAGE = "不能发送空白信息"
+        const val NO_FILE = "请选择上传文件"
+        const val PATH_NAME = "G:\\"
         // Cookie设置
         const val COOKIE_NAME = "SongLea-Cookie"
         const val COOKIE_COMMENT = "Login Cookie"

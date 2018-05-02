@@ -37,6 +37,24 @@
             </div>
         </form>
     </div>
+    <!--上传文件-->
+    <!--
+    <div class="row">
+        <form id="fileForm" class="form-horizontal" onkeydown="if(event.keyCode===13)return false;"
+              method="post" th:action="@{/home/upload}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="sr-only control-label" for="file">File</label>
+                <input type="file" class="form-control" name="file" id="file" title="请选择文件..." value=""
+                       placeholder="请选择文件..."/>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-warning" id="sendFileBth">上传</button>
+            </div>
+        </form>
+    </div>
+    -->
+    <!--下载文件-->
+    <!-- 浏览器中输入：localhost:8095/home/download?fileName=Penguins.jpg 能展示图片-->
 </div>
 <script type="text/javascript" th:src="@{/plugins/jquery-1.10.2.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/bootstrap-3.3.7/js/bootstrap.min.js}"></script>
