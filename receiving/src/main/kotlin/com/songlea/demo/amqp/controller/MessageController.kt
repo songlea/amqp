@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 
 /**
  * 接收消息Controller
@@ -26,7 +27,7 @@ class MessageController(@Autowired private val simpMessagingTemplate: SimpMessag
     private val logger: Logger = LoggerFactory.getLogger(MessageController::class.java)
 
     // 界面
-    @RequestMapping("/index")
+    @RequestMapping(value = ["/index"], method = [RequestMethod.GET])
     fun index() = "message"
 
     // 监听RabbitMQ的指定队列并消费消息
