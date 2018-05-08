@@ -37,13 +37,17 @@ class MyWebMvcConfigurer(@Autowired private val loginInterceptor: LoginIntercept
             if (url != null && druidUrlPattern.matcher(url).matches()) {
                 val cookies: Array<out Cookie> = request.cookies
                 for (cookie: Cookie in cookies) {
-                    if (cookie.name == ResponseData.COOKIE_NAME && cookie.value == request.session.id)
+                    if (cookie.name == ResponseData.COOKIE_NAME && cookie.value == request.session.id) {
+                        // 登录未过期请求放行
                         chain?.doFilter(request, response)
+                        return
+                    }
                 }
+                // 界面输出提示重新登录
                 response?.contentType = MediaType.TEXT_HTML_VALUE
                 response?.characterEncoding = Charsets.UTF_8.name()
-                response?.writer?.write("抱歉，请您先<a style='text-decoration:none;' " +
-                        "href='${request.contextPath}/login/index'> 登录 </a>！")
+                response?.writer?.write("抱歉，您未登录或登录已失效，请重新" +
+                        "<a style='text-decoration:none;' href='${request.contextPath}/login/index'> 登录 </a>！")
                 return
             }
         }
