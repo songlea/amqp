@@ -11,6 +11,13 @@ server:
     enabled: true
 
 spring:
+  # 邮件服务器配置
+  mail:
+    default-encoding: UTF-8
+    host: smtp.163.com
+    port: 25
+    username: your email
+    password: your email password
   datasource:
       # druid数据库连接池配置
       druid:
