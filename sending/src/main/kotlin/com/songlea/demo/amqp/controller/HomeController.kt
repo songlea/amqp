@@ -49,7 +49,7 @@ class HomeController(@Autowired private val scheduleSender: ScheduleSender) {
     fun upload(file: MultipartFile?): ResponseData {
         if (file == null || file.size <= 0)
             return ResponseData(ResponseData.HOME_PAGE_ERROR_CODE, ResponseData.NO_FILE)
-        // 保存上传文件
+        // use相当于jdk7中的try-resources块不需要手动关闭流
         FileOutputStream(File(filePath + file.originalFilename))
                 .buffered().use {
                     it.write(file.bytes)

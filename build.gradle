@@ -1,11 +1,12 @@
 ext {
     // 统一各子模块的第三方jar包的版本号,在子模块中使用$rootProject.xxx来引用
     fastJsonVersion = '1.2.47'
+    druidVersion = '1.1.9'
 }
 
 buildscript {
     ext {
-        kotlinVersion = '1.2.40'
+        kotlinVersion = '1.2.41'
         springBootVersion = '2.0.1.RELEASE'
     }
     repositories {
