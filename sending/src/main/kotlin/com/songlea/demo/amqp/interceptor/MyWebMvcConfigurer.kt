@@ -35,12 +35,14 @@ class MyWebMvcConfigurer(@Autowired private val loginInterceptor: LoginIntercept
         if (request is HttpServletRequest) {
             val url: String? = request.requestURI
             if (url != null && druidUrlPattern.matcher(url).matches()) {
-                val cookies: Array<out Cookie> = request.cookies
-                for (cookie: Cookie in cookies) {
-                    if (cookie.name == ResponseData.COOKIE_NAME && cookie.value == request.session.id) {
-                        // 登录未过期请求放行
-                        chain?.doFilter(request, response)
-                        return
+                val cookies: Array<out Cookie>? = request.cookies
+                if (cookies != null) {
+                    for (cookie: Cookie in cookies) {
+                        if (cookie.name == ResponseData.COOKIE_NAME && cookie.value == request.session.id) {
+                            // 登录未过期请求放行
+                            chain?.doFilter(request, response)
+                            return
+                        }
                     }
                 }
                 // 界面输出提示重新登录
