@@ -28,6 +28,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.springframework.boot:spring-boot-starter-jdbc')
+    compile('org.springframework.boot:spring-boot-starter-mail')
     // kotlin
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
@@ -35,6 +36,7 @@ dependencies {
     // third jar
     compile group: 'com.alibaba', name: 'druid-spring-boot-starter', version: "$rootProject.druidVersion"
     compile group: 'com.alibaba', name: 'fastjson', version: "$rootProject.fastJsonVersion"
+    compile group: 'commons-codec', name: 'commons-codec', version: "$rootProject.commonsCodecVersion"
     runtime group: 'mysql', name: 'mysql-connector-java'
     // test
     testCompile('org.springframework.boot:spring-boot-starter-test')
