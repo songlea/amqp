@@ -1,12 +1,17 @@
 package com.songlea.demo.amqp.controller
 
 import com.songlea.demo.amqp.model.ResponseData
+import com.songlea.demo.amqp.model.UserModel
+import com.songlea.demo.amqp.service.LoginService
+import com.songlea.demo.amqp.util.ProjectCommonUtil
 import com.songlea.demo.amqp.util.IdentifyCodeUtil
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
+import java.util.regex.Pattern
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -18,30 +23,38 @@ import javax.servlet.http.HttpServletResponse
  */
 @Controller
 @RequestMapping("/login")
-class LoginController {
+class LoginController @Autowired constructor(private val loginService: LoginService) {
+
+    // 常见邮箱正则表达式
+    val emailPattern: Pattern = Pattern.compile("^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+\$")
 
     // 登录界面
     @RequestMapping(value = ["/index"], method = [RequestMethod.GET])
     fun index(): String = "login"
 
     // 登录
-    @RequestMapping(value = ["/in"], method = [RequestMethod.POST])
     @ResponseBody
+    @RequestMapping(value = ["/in"], method = [RequestMethod.POST])
     fun signIn(request: HttpServletRequest, response: HttpServletResponse,
                loginUsername: String?, loginPassword: String?, code: String?): ResponseData {
         // 界面传入参数的非空验证
         if (loginUsername.isNullOrBlank())
-            return ResponseData(ResponseData.LOGIN_PAGE_ERROR_CODE, ResponseData.NO_USER_NAME)
+            return ResponseData.ExceptionEnum.NO_USER_NAME.getResult()
         if (loginPassword.isNullOrEmpty())
-            return ResponseData(ResponseData.LOGIN_PAGE_ERROR_CODE, ResponseData.NO_PASSWORD)
+            return ResponseData.ExceptionEnum.NO_PASSWORD.getResult()
         if (code.isNullOrEmpty())
-            return ResponseData(ResponseData.LOGIN_PAGE_ERROR_CODE, ResponseData.NO_VERIFICATION_CODE)
+            return ResponseData.ExceptionEnum.NO_VERIFICATION_CODE.getResult()
         // 验证码正确性验证
         val sessionCode: String? = request.session.getAttribute(ResponseData.VERIFICATION_CODE_NAME) as? String
         if (sessionCode.isNullOrEmpty() || sessionCode?.toLowerCase() != code)
-            return ResponseData(ResponseData.LOGIN_PAGE_ERROR_CODE, ResponseData.ERROR_VERIFICATION_CODE)
-        // 用户与密码正确性验证
-        if (ResponseData.USERNAME == loginUsername && ResponseData.PASSWORD == loginPassword) {
+            return ResponseData.ExceptionEnum.ERROR_VERIFICATION_CODE.getResult()
+        // 用户与密码的正确性验证
+        val encryptPass: String = ProjectCommonUtil.getStringBySHA256(loginPassword!!)
+        val user: UserModel? = loginService.getUserByUsernameAndPass(loginUsername!!, encryptPass)
+        if (user != null) {
+            // 将登录用户的基本信息保存在Session中
+            request.session.setAttribute(ResponseData.USER_MODEL, user)
+            // 将SessionId放到Cookie中判断登录状态
             val cookie = Cookie(ResponseData.COOKIE_NAME, request.session.id)
             cookie.maxAge = ResponseData.COOKIE_MAX_AGE
             cookie.isHttpOnly = ResponseData.COOKIE_HTTP_ONLY
@@ -51,7 +64,7 @@ class LoginController {
             response.addCookie(cookie)
             return ResponseData(null)
         }
-        return ResponseData(ResponseData.LOGIN_PAGE_ERROR_CODE, ResponseData.ERROR_USER_OR_PASSWORD)
+        return ResponseData.ExceptionEnum.ERROR_USER_OR_PASSWORD.getResult()
     }
 
     // 登出
@@ -82,8 +95,34 @@ class LoginController {
         codeUtil.write(response.outputStream)
     }
 
-    // 获取登录用户名
-    fun getDefaultUser(): String {
-        return ResponseData.USERNAME
+    // 用户注册
+    @ResponseBody
+    @RequestMapping(value = ["/register"], method = [RequestMethod.POST])
+    fun register(username: String?, email: String?, password: String?): ResponseData {
+        // 界面传入参数的验证
+        if (username.isNullOrBlank())
+            return ResponseData.ExceptionEnum.NO_USER_NAME.getResult()
+        if (email.isNullOrBlank())
+            return ResponseData.ExceptionEnum.NO_EMAIL.getResult()
+        if (password.isNullOrEmpty())
+            return ResponseData.ExceptionEnum.NO_PASSWORD.getResult()
+        if (password!!.length < 6)
+            return ResponseData.ExceptionEnum.SHORT_PASSWORD.getResult()
+        if (!emailPattern.matcher(email).matches())
+            return ResponseData.ExceptionEnum.INVALID_EMAIL.getResult()
+        // 参数已进行非空验证
+        return loginService.saveUserModel(username!!, email!!, password)
+    }
+
+    // 找回密码(发送一个随机密码到邮箱)
+    @ResponseBody
+    @RequestMapping(value = ["/resetPassword"], method = [RequestMethod.POST])
+    fun resetPassword(email: String?): ResponseData {
+        if (email.isNullOrBlank())
+            return ResponseData.ExceptionEnum.NO_EMAIL.getResult()
+        if (!emailPattern.matcher(email).matches())
+            return ResponseData.ExceptionEnum.INVALID_EMAIL.getResult()
+        // 已非空验证
+        return loginService.resetPassword(email!!)
     }
 }

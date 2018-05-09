@@ -69,11 +69,11 @@ class IdentifyCodeUtil(
     // 得到随机字符
     private fun getRandomStr(n: Int): String {
         val str = StringBuilder()
-        val len = BASE_CODE_CHAR.length - 1
+        val len = ProjectCommonUtil.BASE_CODE_STR.length - 1
         var r: Double
         for (i in 0 until n) {
             r = Math.random() * len
-            str.append(BASE_CODE_CHAR[r.toInt()])
+            str.append(ProjectCommonUtil.BASE_CODE_STR[r.toInt()])
         }
         return str.toString()
     }
@@ -110,11 +110,6 @@ class IdentifyCodeUtil(
     // 返回验证码
     fun getCode(): String {
         return code.toLowerCase()
-    }
-
-    companion object {
-
-        private const val BASE_CODE_CHAR = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefhijklmnpqrstuvwxyz2345678"
     }
 
     init {

@@ -14,8 +14,9 @@
 <div class="container">
     <div class="pull-right h3">
         <span class="glyphicon glyphicon-user"></span> 欢迎您：
-        <span th:text="${@loginController.getDefaultUser()}"></span>&nbsp;&nbsp;
-        <a href="javascript:void(0)" id="logoutBtn">退出</a>
+        <span th:text="${@homeController.getDefaultUser(#httpServletRequest)}"></span>
+        <button class="btn btn-link active" data-toggle="modal" data-target="#updatePasswordModal" id="updatePasswordModalBtn">修改密码</button>
+        <button class="btn btn-link active" id="logoutBtn">退出</button>
     </div>
     <!--
         input-group:通过在文本输入框 <input> 前面、后面或是两边加上文字或按钮，可以实现对表单控件的扩展。
@@ -37,7 +38,7 @@
             </div>
         </form>
     </div>
-    <!--上传文件-->
+    <!--上传文件测试-->
     <!--
     <div class="row">
         <form id="fileForm" class="form-horizontal" onkeydown="if(event.keyCode===13)return false;"
@@ -54,9 +55,41 @@
     </div>
     -->
     <!--下载文件-->
-    <!-- 浏览器中输入：localhost:8095/home/download?fileName=Penguins.jpg 能展示图片
+    <!-- 浏览器中输入：localhost:8095/home/download?fileName=Penguins.jpg 能展示图片(读文件流)
         或直接输入：localhost:8095/Penguins.jpg(静态资源映射)
     -->
+</div>
+<div id="updatePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updatePasswordModalTitle" data-backdrop="static" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="updatePasswordModalTitle" class="modal-title">修改密码</h4>
+            </div>
+            <form id="updatePasswordForm" onkeydown="if(event.keyCode===13)return false;">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="oldPassword" class="control-label">旧密码</label>
+                        <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="旧密码"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword" class="control-label">新密码</label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="新密码"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="repeatNewPassword" class="control-label">确认新密码</label>
+                        <input type="password" class="form-control" id="repeatNewPassword" name="repeatNewPassword" placeholder="请再次输入新密码"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="submitUpdatePassword">确认</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" th:src="@{/plugins/jquery-1.10.2.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/bootstrap-3.3.7/js/bootstrap.min.js}"></script>

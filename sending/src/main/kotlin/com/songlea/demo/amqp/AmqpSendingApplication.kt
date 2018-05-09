@@ -8,6 +8,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.http.HttpStatus
+import org.springframework.transaction.annotation.EnableTransactionManagement
 
 /**
  * AMQP:即Advanced Message Queuing Protocol,高级消息队列协议(应用层协议)
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus
 @SpringBootApplication
 // @EnableRabbit和@Configuration一起使用,可以加在类或者方法上,这个注解开启了容器对注册的bean的@RabbitListener检查
 @EnableRabbit
+@EnableTransactionManagement
 class AmqpSendingApplication {
 
     companion object {

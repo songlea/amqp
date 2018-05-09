@@ -26,52 +26,52 @@ class ControllerExceptionAdvice {
 
     private val logger: Logger = LoggerFactory.getLogger(ControllerExceptionAdvice::class.java)
 
-    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
     @ResponseBody
+    @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
     fun httpRequestMethodNotSupportedException(ex: HttpRequestMethodNotSupportedException): ResponseData {
         val uri = getRequestUri()
         logger.error("请求的方式不对(POST/GET)  接口地址：$uri", ex)
-        return ResponseData.ExceptionEnum.EXCEPTION_METHOD_NOT_SUPPORTED.getResult(uri)
+        return ResponseData.ExceptionEnum.EXCEPTION_METHOD_NOT_SUPPORTED.getResult()
     }
 
-    @ExceptionHandler(ServletRequestBindingException::class)
     @ResponseBody
+    @ExceptionHandler(ServletRequestBindingException::class)
     fun servletRequestBindingExceptionHandler(ex: ServletRequestBindingException): ResponseData {
         val uri = getRequestUri()
         logger.error("请求的参数不完整  接口地址：$uri", ex)
-        return ResponseData.ExceptionEnum.EXCEPTION_LACK_PARAMETER.getResult(uri)
+        return ResponseData.ExceptionEnum.EXCEPTION_LACK_PARAMETER.getResult()
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
     @ResponseBody
+    @ExceptionHandler(MethodArgumentTypeMismatchException::class)
     fun methodArgumentTypeMismatchException(ex: MethodArgumentTypeMismatchException): ResponseData {
         val uri = getRequestUri()
         logger.error("请求方法参数格式不匹配  接口地址：$uri", ex)
-        return ResponseData.ExceptionEnum.EXCEPTION_ARGUMENT_TYPE_MISMATCH.getResult(uri)
+        return ResponseData.ExceptionEnum.EXCEPTION_ARGUMENT_TYPE_MISMATCH.getResult()
     }
 
-    @ExceptionHandler(HttpMediaTypeNotSupportedException::class)
     @ResponseBody
+    @ExceptionHandler(HttpMediaTypeNotSupportedException::class)
     fun httpMediaTypeNotSupportedException(ex: HttpMediaTypeNotSupportedException): ResponseData {
         val uri = getRequestUri()
         logger.error("请求的MIME类型不支持  接口地址：$uri", ex)
-        return ResponseData.ExceptionEnum.EXCEPTION_MEDIA_TYPE_NOT_SUPPORTED.getResult(uri)
+        return ResponseData.ExceptionEnum.EXCEPTION_MEDIA_TYPE_NOT_SUPPORTED.getResult()
     }
 
-    @ExceptionHandler(HttpMediaTypeNotAcceptableException::class)
     @ResponseBody
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException::class)
     fun httpMediaTypeNotAcceptableException(ex: HttpMediaTypeNotAcceptableException): ResponseData {
         val uri = getRequestUri()
         logger.error("请求的MINE类型不接受  接口地址：$uri", ex)
-        return ResponseData.ExceptionEnum.EXCEPTION_MEDIA_TYPE_NOT_ACCEPTABLE.getResult(uri)
+        return ResponseData.ExceptionEnum.EXCEPTION_MEDIA_TYPE_NOT_ACCEPTABLE.getResult()
     }
 
-    @ExceptionHandler(Exception::class)
     @ResponseBody
+    @ExceptionHandler(Exception::class)
     fun defaultExceptionHandler(ex: Exception): ResponseData {
         val uri = getRequestUri()
         logger.error("请求出现异常  接口地址：$uri", ex)
-        return ResponseData.ExceptionEnum.EXCEPTION_SYSTEM_BUSY.getResult(uri)
+        return ResponseData.ExceptionEnum.EXCEPTION_SYSTEM_BUSY.getResult()
     }
 
     // 获取请求的uri地址
