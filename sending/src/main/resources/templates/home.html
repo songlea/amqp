@@ -8,6 +8,14 @@
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrap-3.3.7/css/bootstrap.min.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/artDialog4.1.7/skins/black.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.css}"/>
+    <!--去除按钮的focus后的蓝色边框-->
+    <style>
+        .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+            outline: none;
+            box-shadow: none;
+            border-color: transparent;
+        }
+    </style>
 </head>
 <body>
 <input type="hidden" id="urlPath" th:value="${#httpServletRequest.getContextPath()}"/>
@@ -15,7 +23,9 @@
     <div class="pull-right h3">
         <span class="glyphicon glyphicon-user"></span> 欢迎您：
         <span th:text="${@homeController.getDefaultUser(#httpServletRequest)}"></span>
-        <button class="btn btn-link active" data-toggle="modal" data-target="#updatePasswordModal" id="updatePasswordModalBtn">修改密码</button>
+        <button class="btn btn-link active" data-toggle="modal" data-target="#updatePasswordModal"
+                id="updatePasswordModalBtn">修改密码
+        </button>
         <button class="btn btn-link active" id="logoutBtn">退出</button>
     </div>
     <!--
@@ -55,11 +65,12 @@
     </div>
     -->
     <!--下载文件-->
-    <!-- 浏览器中输入：localhost:8095/home/download?fileName=Penguins.jpg 能展示图片(读文件流)
+    <!-- 浏览器中输入：localhost:8095/home/download?fileName=Penguins.jpg 能展示图片(用流读文件再输出到浏览器)
         或直接输入：localhost:8095/Penguins.jpg(静态资源映射)
     -->
 </div>
-<div id="updatePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updatePasswordModalTitle" data-backdrop="static" data-keyboard="true">
+<div id="updatePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updatePasswordModalTitle"
+     data-backdrop="static" data-keyboard="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -72,15 +83,18 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="oldPassword" class="control-label">旧密码</label>
-                        <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="旧密码"/>
+                        <input type="password" class="form-control" id="oldPassword" name="oldPassword"
+                               placeholder="旧密码"/>
                     </div>
                     <div class="form-group">
                         <label for="newPassword" class="control-label">新密码</label>
-                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="新密码"/>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword"
+                               placeholder="新密码"/>
                     </div>
                     <div class="form-group">
                         <label for="repeatNewPassword" class="control-label">确认新密码</label>
-                        <input type="password" class="form-control" id="repeatNewPassword" name="repeatNewPassword" placeholder="请再次输入新密码"/>
+                        <input type="password" class="form-control" id="repeatNewPassword" name="repeatNewPassword"
+                               placeholder="请再次输入新密码"/>
                     </div>
                 </div>
                 <div class="modal-footer">

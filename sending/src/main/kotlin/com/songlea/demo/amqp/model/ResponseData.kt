@@ -27,6 +27,7 @@ data class ResponseData(var code: Int, var message: String?, var data: Any?) {
     enum class ExceptionEnum constructor(private val code: Int, private val msg: String) {
         // 用户登录
         NO_USER_NAME(1, "请输入用户名！"),
+        LONG_USER_NAME(1, "用户名长度至多32位！"),
         NO_PASSWORD(1, "请输入密码！"),
         SHORT_PASSWORD(1, "密码长度应至少6位！"),
         NO_VERIFICATION_CODE(1, "请输入验证码！"),

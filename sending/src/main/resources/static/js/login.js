@@ -81,9 +81,66 @@ var LOGIN = function () {
 }();
 
 $(function () {
+    var urlPath = $('#urlPath').val();
+
+    // 登录
     $("#loginBtn").click(LOGIN.login);
     $("#resetBtn").click(LOGIN.reset);
     $("input[name=loginUsername]").keypress(LOGIN.unamecr);
     $("input[name=loginPassword]").keypress(LOGIN.upasscr);
     $("input[name=code]").keypress(LOGIN.ucodecr);
+
+    // 重置密码
+    var $resetPasswordForm = $('#resetPasswordForm');
+    $resetPasswordForm.bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        // 表单的各个字段验证
+        fields: {
+            email: {
+                message: '邮箱地址验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '请输入邮箱地址！'
+                    },
+                    emailAddress: {
+                        message: '邮箱地址格式不正确！'
+                    }
+                }
+            }
+        }
+    });
+
+    $('#submitResetPassword').click(function () {
+        if ($resetPasswordForm.data('bootstrapValidator').isValid()) {
+            $resetPasswordForm.ajaxSubmit({
+                url: urlPath + "/login/resetPassword",
+                type: "post",
+                dataType: "json",
+                timeout: 10000,
+                success: function (data) {
+                    if (data.code === 0) {
+                        // 隐藏模态框并重置表单
+                        $('#resetPasswordModal').modal('hide');
+                        $resetPasswordForm.data('bootstrapValidator').resetForm(true);
+                        artDialog.notice({content: '重置密码成功，请稍后查看邮箱！', title: '提示', icon: 'face-smile', time: 4});
+                    } else {
+                        artDialog.notice({content: data.message, title: '提示', icon: 'face-sad', time: 2});
+                    }
+                },
+                error: function () {
+                    artDialog.notice({content: '重置密码失败！', title: '提示', icon: 'face-sad', time: 2});
+                }
+            });
+            return false;
+        }
+    });
+
+    // 重置模态框验证
+    $('#resetPasswordModalBtn').click(function () {
+        $resetPasswordForm.data('bootstrapValidator').resetForm(true);
+    });
 });

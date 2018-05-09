@@ -110,10 +110,10 @@ class LoginController @Autowired constructor(private val loginService: LoginServ
             return ResponseData.ExceptionEnum.NO_PASSWORD.getResult()
         if (password!!.length < 6)
             return ResponseData.ExceptionEnum.SHORT_PASSWORD.getResult()
-        if (!emailPattern.matcher(email).matches())
+        if (!emailPattern.matcher(email!!).matches())
             return ResponseData.ExceptionEnum.INVALID_EMAIL.getResult()
         // 参数已进行非空验证
-        return loginService.saveUserModel(username, email!!, password)
+        return loginService.saveUserModel(username, email, password)
     }
 
     // 找回密码(发送一个随机密码到邮箱)
@@ -122,9 +122,9 @@ class LoginController @Autowired constructor(private val loginService: LoginServ
     fun resetPassword(email: String?): ResponseData {
         if (email.isNullOrBlank())
             return ResponseData.ExceptionEnum.NO_EMAIL.getResult()
-        if (!emailPattern.matcher(email).matches())
+        if (!emailPattern.matcher(email!!).matches())
             return ResponseData.ExceptionEnum.INVALID_EMAIL.getResult()
         // 已非空验证
-        return loginService.resetPassword(email!!)
+        return loginService.resetPassword(email)
     }
 }
