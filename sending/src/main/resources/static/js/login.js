@@ -79,19 +79,9 @@ var LOGIN = function () {
     }
 }();
 
-$(function () {
-    var urlPath = $('#urlPath').val();
-
-    // 登录
-    $("#loginBtn").click(LOGIN.login);
-    $("#resetBtn").click(LOGIN.reset);
-    $("input[name=loginUsername]").keypress(LOGIN.unamecr);
-    $("input[name=loginPassword]").keypress(LOGIN.upasscr);
-    $("input[name=code]").keypress(LOGIN.ucodecr);
-
-    // 重置密码
-    var $resetPasswordForm = $('#resetPasswordForm');
-    $resetPasswordForm.bootstrapValidator({
+// 重置密码
+function loadResetPasswordValidate(jqNode) {
+    jqNode.bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -112,35 +102,11 @@ $(function () {
             }
         }
     });
+}
 
-    $('#submitResetPassword').click(function () {
-        if ($resetPasswordForm.data('bootstrapValidator').isValid()) {
-            $resetPasswordForm.ajaxSubmit({
-                url: urlPath + "/login/resetPassword",
-                type: "post",
-                dataType: "json",
-                timeout: 10000,
-                success: function (data) {
-                    if (data.code === 0) {
-                        // 隐藏模态框并重置表单
-                        $('#resetPasswordModal').modal('hide');
-                        $resetPasswordForm.data('bootstrapValidator').resetForm(true);
-                        artDialog.notice({content: '重置密码成功，请稍后查看邮箱！', title: '提示', icon: 'face-smile', time: 4});
-                    } else {
-                        artDialog.notice({content: data.message, title: '提示', icon: 'face-sad', time: 2});
-                    }
-                },
-                error: function () {
-                    artDialog.notice({content: '重置密码失败！', title: '提示', icon: 'face-sad', time: 2});
-                }
-            });
-            return false;
-        }
-    });
-
-    // 注册新账号
-    var $registerForm = $('#registerForm');
-    $registerForm.bootstrapValidator({
+// 注册
+function loadRegisterFormValidate(jqNode) {
+    jqNode.bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -197,6 +163,50 @@ $(function () {
             }
         }
     });
+}
+
+$(function () {
+    var urlPath = $('#urlPath').val();
+
+    // 登录
+    $("#loginBtn").click(LOGIN.login);
+    $("#resetBtn").click(LOGIN.reset);
+    $("input[name=loginUsername]").keypress(LOGIN.unamecr);
+    $("input[name=loginPassword]").keypress(LOGIN.upasscr);
+    $("input[name=code]").keypress(LOGIN.ucodecr);
+
+    // 重置密码
+    var $resetPasswordForm = $('#resetPasswordForm');
+    loadResetPasswordValidate($resetPasswordForm);
+
+    $('#submitResetPassword').click(function () {
+        if ($resetPasswordForm.data('bootstrapValidator').isValid()) {
+            $resetPasswordForm.ajaxSubmit({
+                url: urlPath + "/login/resetPassword",
+                type: "post",
+                dataType: "json",
+                timeout: 10000,
+                success: function (data) {
+                    if (data.code === 0) {
+                        // 隐藏模态框并重置表单
+                        $('#resetPasswordModal').modal('hide');
+                        $resetPasswordForm.data('bootstrapValidator').resetForm(true);
+                        artDialog.notice({content: '重置密码成功，请稍后查看邮箱！', title: '提示', icon: 'face-smile', time: 4});
+                    } else {
+                        artDialog.notice({content: data.message, title: '提示', icon: 'face-sad', time: 2});
+                    }
+                },
+                error: function () {
+                    artDialog.notice({content: '重置密码失败！', title: '提示', icon: 'face-sad', time: 2});
+                }
+            });
+            return false;
+        }
+    });
+
+    // 注册新账号
+    var $registerForm = $('#registerForm');
+    loadRegisterFormValidate($registerForm);
 
     // 注册用户按钮
     $('#submitRegister').click(function () {
@@ -225,11 +235,17 @@ $(function () {
     });
 
     // 重置模态框验证
-    $('#resetPasswordModalBtn').click(function () {
-        $resetPasswordForm.data('bootstrapValidator').resetForm(true);
+    $('#resetPasswordModal').on('hidden.bs.modal', function() {
+        // 当modal隐藏时销毁验证再重新加载验证
+        $resetPasswordForm.data('bootstrapValidator').destroy();
+        $resetPasswordForm.data('bootstrapValidator', null);
+        $resetPasswordForm[0].reset();
+        loadResetPasswordValidate($resetPasswordForm);
     });
-    $('#registerModalBtn').click(function () {
-        $registerForm.data('bootstrapValidator').resetForm(true);
+    $('#registerModal').on('hidden.bs.modal', function() {
+        $registerForm.data('bootstrapValidator').destroy();
+        $registerForm.data('bootstrapValidator', null);
+        $registerForm[0].reset();
+        loadRegisterFormValidate($registerForm);
     });
-
 });

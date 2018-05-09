@@ -28,26 +28,9 @@ $(function () {
         });
     });
 
-    var $sendMessageForm = $('#sendMessageForm');
     // 发送消息验证
-    $sendMessageForm.bootstrapValidator({
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        // 表单的各个字段验证
-        fields: {
-            message: {
-                message: '消息内容验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '消息内容不能为空'
-                    }
-                }
-            }
-        }
-    });
+    var $sendMessageForm = $('#sendMessageForm');
+    loadSendMessageValidate($sendMessageForm);
 
     // 用jquery.form提交并用bootstrapValidator验证输入
     $('#sendMessageBth').click(function () {
@@ -83,7 +66,72 @@ $(function () {
 
     // 修改密码
     var $updatePasswordForm = $('#updatePasswordForm');
-    $updatePasswordForm.bootstrapValidator({
+    loadUpdatePasswordValidate($updatePasswordForm);
+
+    // 修改密码按钮
+    $('#submitUpdatePassword').click(function () {
+        if ($updatePasswordForm.data('bootstrapValidator').isValid()) {
+            $updatePasswordForm.ajaxSubmit({
+                url: urlPath + "/home/updatePassword",
+                type: "post",
+                dataType: "json",
+                timeout: 10000,
+                success: function (data) {
+                    if (data.code === 0) {
+                        // 隐藏模态框并重置表单
+                        $('#updatePasswordModal').modal('hide');
+                        $updatePasswordForm.data('bootstrapValidator').resetForm(true);
+                        art.dialog({
+                            content: '修改密码成功，请重新登录！', title: '提示', icon: 'face-smile', ok: function () {
+                                window.location.href = urlPath + '/login/index';
+                            }
+                        });
+                    } else {
+                        art.dialog({content: data.message, title: '提示', icon: 'face-sad', time: 2});
+                    }
+                },
+                error: function () {
+                    art.dialog({content: '修改密码失败！', title: '提示', icon: 'face-sad', time: 2});
+                }
+            });
+            return false;
+        }
+    });
+
+    // 重置模态框验证
+    $('#updatePasswordModal').on('hidden.bs.modal', function () {
+        // 当modal隐藏时销毁验证再重新加载验证
+        $updatePasswordForm.data('bootstrapValidator').destroy();
+        $updatePasswordForm.data('bootstrapValidator', null);
+        $updatePasswordForm[0].reset();
+        loadUpdatePasswordValidate($updatePasswordForm);
+    });
+});
+
+// 发送消息验证
+function loadSendMessageValidate(jqNode) {
+    jqNode.bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        // 表单的各个字段验证
+        fields: {
+            message: {
+                message: '消息内容验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '消息内容不能为空'
+                    }
+                }
+            }
+        }
+    });
+}
+
+function loadUpdatePasswordValidate(jqNode) {
+    jqNode.bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
@@ -126,39 +174,4 @@ $(function () {
             }
         }
     });
-
-    // 修改密码按钮
-    $('#submitUpdatePassword').click(function () {
-        if ($updatePasswordForm.data('bootstrapValidator').isValid()) {
-            $updatePasswordForm.ajaxSubmit({
-                url: urlPath + "/home/updatePassword",
-                type: "post",
-                dataType: "json",
-                timeout: 10000,
-                success: function (data) {
-                    if (data.code === 0) {
-                        // 隐藏模态框并重置表单
-                        $('#updatePasswordModal').modal('hide');
-                        $updatePasswordForm.data('bootstrapValidator').resetForm(true);
-                        art.dialog({
-                            content: '修改密码成功，请重新登录！', title: '提示', icon: 'face-smile', ok: function () {
-                                window.location.href = urlPath + '/login/index';
-                            }
-                        });
-                    } else {
-                        art.dialog({content: data.message, title: '提示', icon: 'face-sad', time: 2});
-                    }
-                },
-                error: function () {
-                    art.dialog({content: '修改密码失败！', title: '提示', icon: 'face-sad', time: 2});
-                }
-            });
-            return false;
-        }
-    });
-
-    // 重置模态框验证
-    $('#updatePasswordModalBtn').click(function () {
-        $updatePasswordForm.data('bootstrapValidator').resetForm(true);
-    });
-});
+}
