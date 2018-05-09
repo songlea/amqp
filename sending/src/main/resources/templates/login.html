@@ -9,18 +9,10 @@
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/artDialog4.1.7/skins/black.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/css/login.css}"/>
-    <!--去除按钮的focus后的蓝色边框-->
-    <style>
-        .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
-            outline: none;
-            box-shadow: none;
-            border-color: transparent;
-        }
-    </style>
 </head>
 <body>
 <input type="hidden" id="urlPath" th:value="${#httpServletRequest.getContextPath()}"/>
-<div class="container">
+<div class="container pull-right">
     <div class="content">
         <h2>登录</h2>
         <form id="loginForm" method="post" autocomplete="off">

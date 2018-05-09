@@ -1,13 +1,17 @@
-html, body {
-    background-color: #eee;
-}
-
 body {
-    padding-top: 40px;
+    background: #eee url(../image/tm-home-img.jpg) no-repeat fixed center center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
 }
 
 .container {
     width: 300px;
+    margin-right: 15%;
+    margin-top: 9%;
 }
 
 .container > .content {
@@ -26,4 +30,10 @@ legend {
     margin-right: -50px;
     font-weight: bold;
     color: #404040;
+}
+
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
 }
