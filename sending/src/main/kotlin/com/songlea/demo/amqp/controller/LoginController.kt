@@ -102,6 +102,8 @@ class LoginController @Autowired constructor(private val loginService: LoginServ
         // 界面传入参数的验证
         if (username.isNullOrBlank())
             return ResponseData.ExceptionEnum.NO_USER_NAME.getResult()
+        if (username!!.length > 32)
+            return ResponseData.ExceptionEnum.LONG_USER_NAME.getResult()
         if (email.isNullOrBlank())
             return ResponseData.ExceptionEnum.NO_EMAIL.getResult()
         if (password.isNullOrEmpty())
@@ -111,7 +113,7 @@ class LoginController @Autowired constructor(private val loginService: LoginServ
         if (!emailPattern.matcher(email).matches())
             return ResponseData.ExceptionEnum.INVALID_EMAIL.getResult()
         // 参数已进行非空验证
-        return loginService.saveUserModel(username!!, email!!, password)
+        return loginService.saveUserModel(username, email!!, password)
     }
 
     // 找回密码(发送一个随机密码到邮箱)
