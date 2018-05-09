@@ -229,7 +229,7 @@ $(function () {
         $resetPasswordForm.data('bootstrapValidator').resetForm(true);
     });
     $('#registerModalBtn').click(function () {
-        $resetPasswordForm.data('bootstrapValidator').resetForm(true);
+        $registerForm.data('bootstrapValidator').resetForm(true);
     });
 
 });
