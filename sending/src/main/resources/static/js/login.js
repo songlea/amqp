@@ -4,7 +4,6 @@
  * @author Song Lea
  */
 var LOGIN = function () {
-
     // 界面DOM
     var urlPath = $('#urlPath').val();
     var $alertInfo = $('#alertInfo');
@@ -139,8 +138,98 @@ $(function () {
         }
     });
 
+    // 注册新账号
+    var $registerForm = $('#registerForm');
+    $registerForm.bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        // 表单的各个字段验证
+        fields: {
+            username: {
+                message: '用户名验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '请输入用户名！'
+                    },
+                    stringLength: {
+                        max: 32,
+                        message: '用户名长度至多32位！'
+                    }
+                }
+            },
+            email: {
+                message: '邮箱地址验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '请输入邮箱地址！'
+                    },
+                    emailAddress: {
+                        message: '邮箱地址格式不正确！'
+                    }
+                }
+            },
+            password: {
+                message: '密码验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '请输入密码！'
+                    },
+                    stringLength: {
+                        min: 6,
+                        message: '密码长度应至少6位！'
+                    }
+                }
+            },
+            repeatPassword: {
+                message: '重复密码验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '请再次输入密码！'
+                    },
+                    identical: {
+                        field: 'password',
+                        message: '两次输入的密码不一致！'
+                    }
+                }
+            }
+        }
+    });
+
+    // 注册用户按钮
+    $('#submitRegister').click(function () {
+        if ($registerForm.data('bootstrapValidator').isValid()) {
+            $registerForm.ajaxSubmit({
+                url: urlPath + "/login/register",
+                type: "post",
+                dataType: "json",
+                timeout: 10000,
+                success: function (data) {
+                    if (data.code === 0) {
+                        // 隐藏模态框并重置表单
+                        $('#registerModal').modal('hide');
+                        $registerForm.data('bootstrapValidator').resetForm(true);
+                        artDialog.notice({content: '注册成功，请您登录！', title: '提示', icon: 'face-smile', time: 4});
+                    } else {
+                        artDialog.notice({content: data.message, title: '提示', icon: 'face-sad', time: 2});
+                    }
+                },
+                error: function () {
+                    artDialog.notice({content: '用户注册失败！', title: '提示', icon: 'face-sad', time: 2});
+                }
+            });
+            return false;
+        }
+    });
+
     // 重置模态框验证
     $('#resetPasswordModalBtn').click(function () {
         $resetPasswordForm.data('bootstrapValidator').resetForm(true);
     });
+    $('#registerModalBtn').click(function () {
+        $resetPasswordForm.data('bootstrapValidator').resetForm(true);
+    });
+
 });

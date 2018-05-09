@@ -43,7 +43,7 @@ class LoginDao @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
     // 保存注册用户信息
     fun saveUserModel(username: String, email: String, password: String): Int {
         return jdbcTemplate.update("insert into amqp_user(user_name,email,password) values(?,?,?)",
-                arrayOf(username, email, password))
+                username, email, password)
     }
 
     // 通过邮箱地址来重置密码

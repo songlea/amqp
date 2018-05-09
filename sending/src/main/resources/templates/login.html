@@ -57,6 +57,8 @@
             </div>
             <div class="form-group">
                 <div class="row">
+                    <a class="btn btn-link active pull-right" data-toggle="modal" data-target="#registerModal"
+                       id="registerModalBtn" role="button" href="#">注册新账号</a>
                     <a class="btn btn-link active pull-right" data-toggle="modal" data-target="#resetPasswordModal"
                        id="resetPasswordModalBtn" role="button" href="#">忘了密码？</a>
                 </div>
@@ -84,6 +86,47 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" id="submitResetPassword">确认</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="registerModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="registerModalTitle"
+     data-backdrop="static" data-keyboard="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="registerModalTitle" class="modal-title">注册新账号</h4>
+            </div>
+            <form id="registerForm" onkeydown="if(event.keyCode===13)return false;">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="register-username" class="control-label">用户名</label>
+                        <input type="text" class="form-control" id="register-username" name="username"
+                               placeholder="用户名"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email" class="control-label">邮箱地址</label>
+                        <input type="email" class="form-control" id="register-email" name="email"
+                               placeholder="邮箱地址"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password" class="control-label">密码</label>
+                        <input type="password" class="form-control" id="register-password" name="password"
+                               placeholder="密码"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-repeat-password" class="control-label">确认密码</label>
+                        <input type="password" class="form-control" id="register-repeat-password" name="repeatPassword"
+                               placeholder="请再次输入密码"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="submitRegister">确认</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>
