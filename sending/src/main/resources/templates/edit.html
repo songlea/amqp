@@ -4,10 +4,8 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>主页</title>
+    <title>博客</title>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrap-3.3.7/css/bootstrap.min.css}"/>
-    <link type="text/css" rel="stylesheet" th:href="@{/plugins/artDialog4.1.7/skins/black.css}"/>
-    <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/css/home.css}"/>
 </head>
 <body>
@@ -16,11 +14,10 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="https://github.com/SongLea">SongLea</a>
-            <!--<img alt="Brand" th:src="@{/image/brand.png}">-->
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#">首页</a></li>
-            <li><a th:href="@{/edit/index}">博客</a></li>
+            <li><a th:href="@{/home/index}">首页</a></li>
+            <li class="active"><a href="#">博客</a></li>
             <li><a href="javascript:void(0)" role="button" data-toggle="modal" data-target="#contactModal">关于</a></li>
         </ul>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -47,26 +44,20 @@
     </div>
 </nav>
 <div class="container">
-    <!--
-        input-group:通过在文本输入框 <input> 前面、后面或是两边加上文字或按钮，可以实现对表单控件的扩展。
-            为 .input-group 赋予 .input-group-addon 或 .input-group-btn 类，可以给 .form-control 的前面或后面添加额外的元素;
-        form-control:所有设置了 .form-control 类的 <input>、<textarea> 和 <select> 元素都将被默认设置宽度属性为 width: 100%;
-        form-group:将 label 元素和 .form-control控件包裹在 .form-group 中可以获得最好的排列;
-        form-inline:在内联表单，我们将这些元素的宽度设置为 width: auto;
-    -->
-    <div class="row">
-        <!--阻止bootstrap表单默认Enter键提交-->
-        <form id="sendMessageForm" class="form-horizontal" onkeydown="if(event.keyCode===13)return false;">
-            <div class="form-group">
-                <label class="sr-only control-label" for="message">Message</label>
-                <input type="text" class="form-control" name="message" id="message" title="请输入消息内容..." value=""
-                       placeholder="请输入消息内容..."/>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" id="sendMessageBth">发送</button>
-            </div>
-        </form>
+    <div class="page-header">
+        <h1>记录你的点滴,分享你的精彩！</h1>
     </div>
+    <form>
+        <div class="form-group">
+            <label for="blogTitle">标题</label>
+            <input type="text" class="form-control" id="blogTitle" placeholder="请输入标题" name="blogTitle">
+        </div>
+        <div class="form-group">
+            <label for="editable">内容</label>
+            <textarea name="blogContent" style="width:100%" id="editable"></textarea>
+        </div>
+        <!--// TODO-->
+    </form>
 </div>
 <!--联系方式窗口-->
 <div id="contactModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactModalTitle"
@@ -83,7 +74,8 @@
                 <p class="h4">联系作者</p>
                 <p>Email：<a href="mailto:lsong329483@gmail.com">lsong329483@gmail.com</a></p>
                 <p class="h4">项目源码</p>
-                <p>Github：<a target="_blank" href="https://github.com/SongLea/amqp">https://github.com/SongLea/amqp</a></p>
+                <p>Github：<a target="_blank" href="https://github.com/SongLea/amqp">https://github.com/SongLea/amqp</a>
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -139,10 +131,8 @@
 </div>
 <script type="text/javascript" th:src="@{/plugins/jquery-1.10.2.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/bootstrap-3.3.7/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/artDialog4.1.7/artDialog.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/bootstrapValidator-0.5.3/zh_CN.min.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/jqueryForm-4.2.2/jquery.form.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/home.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/tinymce-4.7.12/tinymce.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/tinymce-4.7.12/jquery.tinymce.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/edit.js}"></script>
 </body>
 </html>
