@@ -1,0 +1,16 @@
+/* 去除按钮的focus后的蓝色边框 */
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: transparent;
+}
+
+/* 固定的导航条会遮住页面上的其它内容，除非你给 <body> 元素底部设置了 padding */
+body {
+    padding-top: 70px;
+}
+
+/* 去除a标签的下划线*/
+a {
+    text-decoration: none;
+}

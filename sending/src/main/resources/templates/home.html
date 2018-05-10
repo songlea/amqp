@@ -8,26 +8,44 @@
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrap-3.3.7/css/bootstrap.min.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/artDialog4.1.7/skins/black.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.css}"/>
-    <!--去除按钮的focus后的蓝色边框-->
-    <style>
-        .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
-            outline: none;
-            box-shadow: none;
-            border-color: transparent;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" th:href="@{/css/home.css}"/>
 </head>
 <body>
 <input type="hidden" id="urlPath" th:value="${#httpServletRequest.getContextPath()}"/>
-<div class="container">
-    <div class="pull-right h3">
-        <span class="glyphicon glyphicon-user"></span> 欢迎您：
-        <span th:text="${@homeController.getDefaultUser(#httpServletRequest)}"></span>
-        <button class="btn btn-link active" data-toggle="modal" data-target="#updatePasswordModal"
-                id="updatePasswordModalBtn">修改密码
-        </button>
-        <button class="btn btn-link active" id="logoutBtn">退出</button>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="https://github.com/SongLea">SongLea</a>
+            <!--<img alt="Brand" th:src="@{/image/brand.png}">-->
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a th:href="@{/home/index}">首页</a></li>
+            <li><a href="javascript:void(0)" role="button" data-toggle="modal" data-target="#contactModal">关于</a></li>
+        </ul>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <p class="navbar-text"><span class="glyphicon glyphicon-user"></span> 欢迎您：
+                        <span th:text="${@homeController.getDefaultUser(#httpServletRequest)}"></span>
+                    </p>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-cog"></span> 设置<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="btn btn-link active" data-toggle="modal" data-target="#updatePasswordModal"
+                               id="updatePasswordModalBtn" role="button" href="javascript:void(0)">修改密码</a>
+                        </li>
+                        <li><a class="btn btn-link active" id="logoutBtn"
+                               role="button" href="javascript:void(0)">退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
+</nav>
+<div class="container">
     <!--
         input-group:通过在文本输入框 <input> 前面、后面或是两边加上文字或按钮，可以实现对表单控件的扩展。
             为 .input-group 赋予 .input-group-addon 或 .input-group-btn 类，可以给 .form-control 的前面或后面添加额外的元素;
@@ -35,7 +53,7 @@
         form-group:将 label 元素和 .form-control控件包裹在 .form-group 中可以获得最好的排列;
         form-inline:在内联表单，我们将这些元素的宽度设置为 width: auto;
     -->
-    <div class="row" style="margin-top: 60px;">
+    <div class="row">
         <!--阻止bootstrap表单默认Enter键提交-->
         <form id="sendMessageForm" class="form-horizontal" onkeydown="if(event.keyCode===13)return false;">
             <div class="form-group">
@@ -69,6 +87,30 @@
         或直接输入：localhost:8095/Penguins.jpg(静态资源映射)
     -->
 </div>
+<!--联系方式窗口-->
+<div id="contactModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactModalTitle"
+     data-keyboard="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="contactModalTitle" class="modal-title">关于</h4>
+            </div>
+            <div class="modal-body">
+                <p class="h4">联系作者</p>
+                <p>Email：<a href="mailto:lsong329483@gmail.com">lsong329483@gmail.com</a></p>
+                <p class="h4">项目源码</p>
+                <p>Github：<a target="_blank" href="https://github.com/SongLea/amqp">https://github.com/SongLea/amqp</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--重置密码窗口-->
 <div id="updatePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="updatePasswordModalTitle"
      data-backdrop="static" data-keyboard="true">
     <div class="modal-dialog" role="document">
@@ -83,18 +125,27 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="oldPassword" class="control-label">旧密码</label>
-                        <input type="password" class="form-control" id="oldPassword" name="oldPassword"
-                               placeholder="旧密码"/>
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                            <input type="password" class="form-control" id="oldPassword" name="oldPassword"
+                                   placeholder="请输入旧密码"/>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="newPassword" class="control-label">新密码</label>
-                        <input type="password" class="form-control" id="newPassword" name="newPassword"
-                               placeholder="新密码"/>
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                   placeholder="请输入新密码"/>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="repeatNewPassword" class="control-label">确认新密码</label>
-                        <input type="password" class="form-control" id="repeatNewPassword" name="repeatNewPassword"
-                               placeholder="请再次输入新密码"/>
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                            <input type="password" class="form-control" id="repeatNewPassword" name="repeatNewPassword"
+                                   placeholder="请再次输入新密码"/>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
