@@ -18,3 +18,12 @@ body{ overflow: auto !important;} .modal{ overflow: auto !important;}
 a {
     text-decoration: none;
 }
+
+.tm-blog-img-container {
+    background: url('../image/tm-blog-img.jpg') no-repeat center center;
+    background-size: 100% auto;
+    height: 100px;
+    margin-bottom: 20px;
+    width: 100%;
+    overflow: hidden;
+}
