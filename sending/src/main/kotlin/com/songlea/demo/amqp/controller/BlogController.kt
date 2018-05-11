@@ -71,6 +71,7 @@ class BlogController @Autowired constructor(private val blogService: BlogService
             return ResponseData.ExceptionEnum.LONG_BLOG_TITLE.getResult()
         if (blogContent.isNullOrBlank())
             return ResponseData.ExceptionEnum.NO_BLOG_CONTENT.getResult()
+        // TODO blogContent存在XSS攻击问题,待处理
         // 从session中获取登录用户
         val userModel: UserModel = request.session.getAttribute(ResponseData.USER_MODEL) as? UserModel
                 ?: return ResponseData.ExceptionEnum.OVER_TIME_LOGIN.getResult()
