@@ -66,7 +66,7 @@ object ProjectCommonUtil {
     fun randomPassword(length: Int = 8): String {
         val random = Random()
         val result = StringBuilder()
-        for (i in 0..length)
+        for (i in 0 until length)
             result.append(BASE_CODE_STR[random.nextInt(BASE_CODE_STR.length)])
         return result.toString()
     }
