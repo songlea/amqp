@@ -7,21 +7,6 @@ package com.songlea.demo.amqp.model
  */
 data class ResponseData(var code: Int, var message: String?, var data: Any?) {
 
-    companion object {
-        const val SUCCESS = "操作成功！"
-        // 登录界面
-        const val LOGIN_URL = "/login/index"
-        const val VERIFICATION_CODE_NAME = "VerificationCode"
-        const val USER_MODEL = "userModel"
-        // Cookie设置
-        const val COOKIE_NAME = "AMQP-COOKIE"
-        const val COOKIE_COMMENT = "My AMQP Application's Login Cookie Comment"
-        const val COOKIE_PATH = "/"
-        const val COOKIE_HTTP_ONLY = true
-        const val COOKIE_SECURE = false
-        const val COOKIE_MAX_AGE = 30 * 60
-    }
-
     constructor(data: Any?) : this(0, SUCCESS, data)
 
     enum class ExceptionEnum constructor(private val code: Int, private val msg: String) {
@@ -46,9 +31,12 @@ data class ResponseData(var code: Int, var message: String?, var data: Any?) {
         NO_OLD_PASSWORD(4, "请输入旧密码！"),
         NO_NEW_PASSWORD(4, "请输入新密码！"),
         WRONG_OLD_PASSWORD(4, "您输入的旧密码不正确！"),
-        // 文件上传
+        // 文章发布/文件上传
         NO_MESSAGE(5, "不能发送空白信息！"),
         NO_FILE(5, "请选择上传文件！"),
+        NO_BLOG_TITLE(5, "请输入文章标题！"),
+        LONG_BLOG_TITLE(5, "文章标题长度至多64位！"),
+        NO_BLOG_CONTENT(5, "请输入文章内容！"),
         // 异常处理
         EXCEPTION_SYSTEM_BUSY(100, "系统正忙，请稍后重试！"),
         EXCEPTION_METHOD_NOT_SUPPORTED(101, "请求的方式不对(POST/GET)！"),
@@ -64,4 +52,20 @@ data class ResponseData(var code: Int, var message: String?, var data: Any?) {
             return ResponseData(this.code, this.msg, null)
         }
     }
+
+    companion object {
+        const val SUCCESS = "操作成功！"
+        // 登录界面
+        const val LOGIN_URL = "/login/index"
+        const val VERIFICATION_CODE_NAME = "VerificationCode"
+        const val USER_MODEL = "userModel"
+        // Cookie设置
+        const val COOKIE_NAME = "AMQP-COOKIE"
+        const val COOKIE_COMMENT = "My AMQP Application's Login Cookie Comment"
+        const val COOKIE_PATH = "/"
+        const val COOKIE_HTTP_ONLY = true
+        const val COOKIE_SECURE = false
+        const val COOKIE_MAX_AGE = 30 * 60
+    }
+
 }

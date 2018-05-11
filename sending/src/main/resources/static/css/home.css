@@ -10,6 +10,10 @@ body {
     padding-top: 70px;
 }
 
+/* 解决Bootstrap模态框切换时页面抖动or页面滚动条
+body{ overflow: auto !important;} .modal{ overflow: auto !important;}
+*/
+
 /* 去除a标签的下划线*/
 a {
     text-decoration: none;

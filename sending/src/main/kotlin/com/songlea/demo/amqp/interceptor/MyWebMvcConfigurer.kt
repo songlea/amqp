@@ -25,7 +25,7 @@ class MyWebMvcConfigurer(@Autowired private val loginInterceptor: LoginIntercept
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loginInterceptor)
                 // 匹配需要拦截的请求(优化级 > excludePath)
-                .addPathPatterns("/home/*", "/edit/*")
+                .addPathPatterns("/home/*", "/blog/*")
                 // 匹配不拦截的请求(登录界面请求)
                 .excludePathPatterns("/login/*")
     }

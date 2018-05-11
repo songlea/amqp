@@ -12,15 +12,16 @@
 </head>
 <body>
 <input type="hidden" id="urlPath" th:value="${#httpServletRequest.getContextPath()}"/>
+<!--导航栏-->
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="https://github.com/SongLea">SongLea</a>
+            <a class="navbar-brand" target="_blank" href="https://github.com/SongLea">SongLea</a>
             <!--<img alt="Brand" th:src="@{/image/brand.png}">-->
         </div>
         <ul class="nav navbar-nav">
             <li class="active"><a href="#">首页</a></li>
-            <li><a th:href="@{/edit/index}">博客</a></li>
+            <li><a th:href="@{/blog/index}">博客</a></li>
             <li><a href="javascript:void(0)" role="button" data-toggle="modal" data-target="#contactModal">关于</a></li>
         </ul>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -83,7 +84,12 @@
                 <p class="h4">联系作者</p>
                 <p>Email：<a href="mailto:lsong329483@gmail.com">lsong329483@gmail.com</a></p>
                 <p class="h4">项目源码</p>
-                <p>Github：<a target="_blank" href="https://github.com/SongLea/amqp">https://github.com/SongLea/amqp</a></p>
+                <p>Github：
+                    <a target="_blank" href="https://github.com/SongLea/amqp">https://github.com/SongLea/amqp</a>
+                </p>
+                <small>本项目源码受
+                    <a rel="license" href="https://github.com/SongLea/amqp/blob/master/LICENSE" target="_blank">MIT</a>开源协议保护。
+                </small>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -143,6 +149,7 @@
 <script type="text/javascript" th:src="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/bootstrapValidator-0.5.3/zh_CN.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/jqueryForm-4.2.2/jquery.form.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/nav.js}"></script>
 <script type="text/javascript" th:src="@{/js/home.js}"></script>
 </body>
 </html>

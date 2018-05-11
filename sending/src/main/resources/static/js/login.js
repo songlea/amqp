@@ -79,92 +79,6 @@ var LOGIN = function () {
     }
 }();
 
-// 重置密码
-function loadResetPasswordValidate(jqNode) {
-    jqNode.bootstrapValidator({
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        // 表单的各个字段验证
-        fields: {
-            email: {
-                message: '邮箱地址验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '请输入邮箱地址！'
-                    },
-                    emailAddress: {
-                        message: '邮箱地址格式不正确！'
-                    }
-                }
-            }
-        }
-    });
-}
-
-// 注册
-function loadRegisterFormValidate(jqNode) {
-    jqNode.bootstrapValidator({
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        // 表单的各个字段验证
-        fields: {
-            username: {
-                message: '用户名验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '请输入用户名！'
-                    },
-                    stringLength: {
-                        max: 32,
-                        message: '用户名长度至多32位！'
-                    }
-                }
-            },
-            email: {
-                message: '邮箱地址验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '请输入邮箱地址！'
-                    },
-                    emailAddress: {
-                        message: '邮箱地址格式不正确！'
-                    }
-                }
-            },
-            password: {
-                message: '密码验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '请输入密码！'
-                    },
-                    stringLength: {
-                        min: 6,
-                        message: '密码长度应至少6位！'
-                    }
-                }
-            },
-            repeatPassword: {
-                message: '重复密码验证失败',
-                validators: {
-                    notEmpty: {
-                        message: '请再次输入密码！'
-                    },
-                    identical: {
-                        field: 'password',
-                        message: '两次输入的密码不一致！'
-                    }
-                }
-            }
-        }
-    });
-}
-
 $(function () {
     var urlPath = $('#urlPath').val();
 
@@ -248,4 +162,90 @@ $(function () {
         $registerForm[0].reset();
         loadRegisterFormValidate($registerForm);
     });
+
+    // 重置密码
+    function loadResetPasswordValidate(jqNode) {
+        jqNode.bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            // 表单的各个字段验证
+            fields: {
+                email: {
+                    message: '邮箱地址验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '请输入邮箱地址！'
+                        },
+                        emailAddress: {
+                            message: '邮箱地址格式不正确！'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // 注册
+    function loadRegisterFormValidate(jqNode) {
+        jqNode.bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            // 表单的各个字段验证
+            fields: {
+                username: {
+                    message: '用户名验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '请输入用户名！'
+                        },
+                        stringLength: {
+                            max: 32,
+                            message: '用户名长度至多32位！'
+                        }
+                    }
+                },
+                email: {
+                    message: '邮箱地址验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '请输入邮箱地址！'
+                        },
+                        emailAddress: {
+                            message: '邮箱地址格式不正确！'
+                        }
+                    }
+                },
+                password: {
+                    message: '密码验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '请输入密码！'
+                        },
+                        stringLength: {
+                            min: 6,
+                            message: '密码长度应至少6位！'
+                        }
+                    }
+                },
+                repeatPassword: {
+                    message: '重复密码验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '请再次输入密码！'
+                        },
+                        identical: {
+                            field: 'password',
+                            message: '两次输入的密码不一致！'
+                        }
+                    }
+                }
+            }
+        });
+    }
 });

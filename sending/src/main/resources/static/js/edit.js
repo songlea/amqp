@@ -1,24 +1,25 @@
 $(function () {
     var urlPath = $('#urlPath').val();
+    var $publishForm = $('#publishForm');
 
     tinymce.init({
         selector: "textarea#editable",
         plugins: [
             "advlist autolink autosave link image lists charmap print preview hr anchor pagebreak ",
-            "searchreplace wordcount visualblocks visualchars code media nonbreaking ",
+            "searchreplace visualblocks visualchars code media nonbreaking ",
             "table contextmenu directionality emoticons template textcolor paste fullpage textcolor"
         ],
-        branding: false, // tinymce的图标是否显示
+        branding: false, // tinymce图标是否显示
         height: 400, // 编辑区域的高度
         menubar: false, // 此选项允许您指定哪些菜单应该出现以及它们出现在TinyMCE顶部的菜单栏中的顺序
         resize: true, // 允许垂直方向调整大小,false为禁止调整,both为水平与垂直方向
-        // images_upload_url: urlPath + '/edit/upload',
+        // images_upload_url: urlPath + '/blog/upload',
         images_reuse_filename: false,
         // 此选项允许您用自定义逻辑替换TinyMCE的默认JavaScript上传处理程序函数
         images_upload_handler: function (blobInfo, success, failure) {
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = false;
-            xhr.open('POST', urlPath + '/edit/upload');
+            xhr.open('POST', urlPath + '/blog/upload');
             xhr.onload = function () {
                 if (xhr.status !== 200) {
                     failure('请求失败: ' + xhr.status);
@@ -54,5 +55,68 @@ $(function () {
             {title: 'Test template 2', content: 'Test 2'}
         ],
         language: 'zh_CN'
+    });
+
+    // 发布验证
+    $publishForm.bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        // 表单的各个字段验证
+        fields: {
+            blogTitle: {
+                message: '文章标题验证失败',
+                validators: {
+                    notEmpty: {
+                        message: '请输入文章标题！'
+                    },
+                    stringLength: {
+                        max: 64,
+                        message: '文章标题长度至多64位！'
+                    }
+                }
+            }
+        }
+    });
+
+    // 绑定form-pre-serialize事件,在触发form-serilaize事件前保存tinyMCE的数据到textarea中(重要)
+    $publishForm.bind('form-pre-serialize', function() {
+        tinymce.triggerSave();
+    });
+
+    // 发布按钮
+    $('#publishBtn').click(function () {
+        if ($publishForm.data('bootstrapValidator').isValid()) {
+            // 手动校验tinyMCE的内容不为空
+            var textBody = tinymce.activeEditor.getBody();
+            if (textBody && textBody.innerHTML && textBody.innerHTML.indexOf('<img') === -1) { // 没有图片标签
+                if ($.trim(textBody.textContent) === '') {
+                    art.dialog({content: '请输入文章内容！', title: '提示', icon: 'face-sad', time: 2});
+                    return false;
+                }
+            }
+            $publishForm.ajaxSubmit({
+                url: urlPath + "/blog/publish",
+                type: "post",
+                dataType: "json",
+                timeout: 10000,
+                success: function (data) {
+                    if (data.code === 0) {
+                        art.dialog({content: '发布文章成功！', title: '提示', icon: 'face-smile', time: 2});
+                        // 重置表单
+                        $publishForm[0].reset();
+                        $publishForm.data('bootstrapValidator').resetForm(true);
+                    } else {
+                        art.dialog({content: data.message, title: '提示', icon: 'face-sad', time: 2});
+                    }
+                },
+                error: function () {
+                    art.dialog({content: '发布文章失败！', title: '提示', icon: 'face-sad', time: 2});
+                }
+            });
+            return false;
+        }
     });
 });
