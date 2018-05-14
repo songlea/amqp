@@ -76,7 +76,7 @@ $(function () {
                 for (var i = 0, length = data.length; i < length; i++) {
                     _html += "<div class='page-header'>" +
                         "<h4>" + data[i].title + "  <small>" + data[i].createTime + "</small></h4>" +
-                        "<p><a class='btn btn-link' href='" + urlPath + "/articles/" + data[i].id + "' role='button'>&gt;&gt;&gt;查看详情</a></p>" +
+                        "<p><a class='btn btn-link' target='_blank' href='" + urlPath + "/articles/" + data[i].id + "' role='button'>&gt;&gt;&gt;查看详情</a></p>" +
                         "</div>";
                 }
             }

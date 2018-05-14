@@ -17,6 +17,6 @@ data class ArticleModel(var id: Int, var title: String, var content: String, var
             -1, ProjectCommonUtil.DEFAULT_EMPTY)
 
     companion object {
-        const val DELETE: String = "<strong>文章已不存在<strong>"
+        const val DELETE_CONTENT: String = "<strong>文章已不存在<strong>"
     }
 }

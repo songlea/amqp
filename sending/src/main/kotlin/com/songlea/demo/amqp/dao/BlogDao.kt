@@ -48,6 +48,6 @@ class BlogDao @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
             record.createTime = ProjectCommonUtil.formatData(rs.getTimestamp("create_time"))
             return@RowMapper record
         })
-        return if (list.isNotEmpty()) list[0] else ArticleModel(ArticleModel.DELETE)
+        return if (list.isNotEmpty()) list[0] else ArticleModel(ArticleModel.DELETE_CONTENT)
     }
 }
