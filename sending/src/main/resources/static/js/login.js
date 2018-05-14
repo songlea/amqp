@@ -149,14 +149,14 @@ $(function () {
     });
 
     // 重置模态框验证
-    $('#resetPasswordModal').on('hidden.bs.modal', function() {
+    $('#resetPasswordModal').on('hidden.bs.modal', function () {
         // 当modal隐藏时销毁验证再重新加载验证
         $resetPasswordForm.data('bootstrapValidator').destroy();
         $resetPasswordForm.data('bootstrapValidator', null);
         $resetPasswordForm[0].reset();
         loadResetPasswordValidate($resetPasswordForm);
     });
-    $('#registerModal').on('hidden.bs.modal', function() {
+    $('#registerModal').on('hidden.bs.modal', function () {
         $registerForm.data('bootstrapValidator').destroy();
         $registerForm.data('bootstrapValidator', null);
         $registerForm[0].reset();
@@ -173,11 +173,19 @@ $(function () {
             },
             // 表单的各个字段验证
             fields: {
-                email: {
-                    message: '邮箱地址验证失败',
+                resetUsername: {
+                    message: '注册用户名验证失败',
                     validators: {
                         notEmpty: {
-                            message: '请输入邮箱地址！'
+                            message: '请输入注册用户名！'
+                        }
+                    }
+                },
+                resetEmail: {
+                    message: '注册邮箱地址验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '请输入注册邮箱地址！'
                         },
                         emailAddress: {
                             message: '邮箱地址格式不正确！'
