@@ -6,11 +6,11 @@ import org.slf4j.LoggerFactory
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
-import java.util.Random
-
 
 /**
  * 项目工具类
@@ -69,5 +69,13 @@ object ProjectCommonUtil {
         for (i in 0 until length)
             result.append(BASE_CODE_STR[random.nextInt(BASE_CODE_STR.length)])
         return result.toString()
+    }
+
+    // 格式化时间
+    fun formatData(date: Date?): String {
+        if (date == null)
+            return DEFAULT_EMPTY
+        // 非空时间时格式化
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date)
     }
 }

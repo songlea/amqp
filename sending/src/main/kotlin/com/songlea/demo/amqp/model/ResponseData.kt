@@ -38,6 +38,7 @@ data class ResponseData(var code: Int, var message: String?, var data: Any?) {
         NO_BLOG_TITLE(5, "请输入文章标题！"),
         LONG_BLOG_TITLE(5, "文章标题长度至多64位！"),
         NO_BLOG_CONTENT(5, "请输入文章内容！"),
+        NO_PAGE_PARAMS(5, "分页参数不可为空！"),
         // 异常处理
         EXCEPTION_SYSTEM_BUSY(100, "系统正忙，请稍后重试！"),
         EXCEPTION_METHOD_NOT_SUPPORTED(101, "请求的方式不对(POST/GET)！"),

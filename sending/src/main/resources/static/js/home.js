@@ -59,4 +59,31 @@ $(function () {
             }
         });
     }
+
+    // 加载文章列表
+    $.ajax({
+        url: urlPath + "/blog/articles",
+        type: "get",
+        dataType: "json",
+        timeout: 10000,
+        data: {
+            start: 0,
+            limit: 10
+        },
+        success: function (content) {
+            if (content && content.code === 0) {
+                var data = content.data, _html = '';
+                for (var i = 0, length = data.length; i < length; i++) {
+                    _html += "<div class='page-header'>" +
+                        "<h4>" + data[i].title + "  <small>" + data[i].createTime + "</small></h4>" +
+                        "<p><a class='btn btn-link' href='" + urlPath + "/articles/" + data[i].id + "' role='button'>&gt;&gt;&gt;查看详情</a></p>" +
+                        "</div>";
+                }
+            }
+            $("#mainContent").append(_html);
+        },
+        error: function () {
+            art.dialog({content: '加载文章列表失败！', title: '提示', icon: 'face-sad', time: 2});
+        }
+    });
 });

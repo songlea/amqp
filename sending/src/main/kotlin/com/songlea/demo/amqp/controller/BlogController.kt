@@ -82,4 +82,16 @@ class BlogController @Autowired constructor(private val blogService: BlogService
             ResponseData.ExceptionEnum.EXCEPTION_SYSTEM_BUSY.getResult()
         }
     }
+
+    // 加载文章列表
+    @ResponseBody
+    @RequestMapping(value = ["/articles"], method = [RequestMethod.GET])
+    fun selectArticles(request: HttpServletRequest, start: Int?, limit: Int?): ResponseData {
+        // 从session中获取登录用户
+        val userModel: UserModel = request.session.getAttribute(ResponseData.USER_MODEL) as? UserModel
+                ?: return ResponseData.ExceptionEnum.OVER_TIME_LOGIN.getResult()
+        if (start == null || limit == null)
+            return ResponseData.ExceptionEnum.NO_PAGE_PARAMS.getResult()
+        return blogService.selectArticles(userModel.id, start, limit)
+    }
 }

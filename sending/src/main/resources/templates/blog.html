@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>主页</title>
+    <title>博客</title>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrap-3.3.7/css/bootstrap.min.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/artDialog4.1.7/skins/black.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/plugins/bootstrapValidator-0.5.3/bootstrapValidator.min.css}"/>
@@ -16,7 +16,6 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                     data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
@@ -25,14 +24,12 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" target="_blank" href="https://github.com/SongLea">SongLea</a>
-            <!--<img alt="Brand" th:src="@{/image/brand.png}">-->
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav ">
-                <li class="active"><a href="#">首页</a></li>
-                <li><a th:href="@{/blog/index}">博客</a></li>
-                <li><a href="javascript:void(0)" role="button" data-toggle="modal" data-target="#contactModal">关于</a>
-                </li>
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/home/index}">首页</a></li>
+                <li class="active"><a href="#">博客</a></li>
+                <li><a href="javascript:void(0)" role="button" data-toggle="modal" data-target="#contactModal">关于</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
@@ -56,32 +53,11 @@
         </div>
     </div>
 </nav>
-<div class="container" id="mainContent">
-    <!--
-        input-group:通过在文本输入框 <input> 前面、后面或是两边加上文字或按钮，可以实现对表单控件的扩展。
-            为 .input-group 赋予 .input-group-addon 或 .input-group-btn 类，可以给 .form-control 的前面或后面添加额外的元素;
-        form-control:所有设置了 .form-control 类的 <input>、<textarea> 和 <select> 元素都将被默认设置宽度属性为 width: 100%;
-        form-group:将 label 元素和 .form-control控件包裹在 .form-group 中可以获得最好的排列;
-        form-inline:在内联表单，我们将这些元素的宽度设置为 width: auto;
-    -->
-    <!--
-        发送RabbitMQ消息的测试，点击发送后输入的消息内容会发送到RabbitMQ中并持久化，
-        receiving模块中代码监听RabbitMQ的指定队列，获取消息并推送到界面上显示。
-    -->
-    <!--
-    <div class="row">
-        <form id="sendMessageForm" class="form-horizontal" onkeydown="if(event.keyCode===13)return false;">
-            <div class="form-group">
-                <label class="sr-only control-label" for="message">Message</label>
-                <input type="text" class="form-control" name="message" id="message" title="请输入消息内容..." value=""
-                       placeholder="请输入消息内容..."/>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary" id="sendMessageBth">发送</button>
-            </div>
-        </form>
-    </div>
-    -->
+<div class="container">
+   <div class="row text-center">
+       <h2><span th:text="${title}">&nbsp;&nbsp;&nbsp;<small th:text="${createTime}"></small></span></h2>
+   </div>
+    <div class="row" th:utext="${content}"></div>
 </div>
 <!--联系方式窗口-->
 <div id="contactModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactModalTitle"
@@ -164,6 +140,5 @@
 <script type="text/javascript" th:src="@{/plugins/bootstrapValidator-0.5.3/zh_CN.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/jqueryForm-4.2.2/jquery.form.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/nav.js}"></script>
-<script type="text/javascript" th:src="@{/js/home.js}"></script>
 </body>
 </html>
