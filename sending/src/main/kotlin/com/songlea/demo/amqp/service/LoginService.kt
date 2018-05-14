@@ -47,7 +47,10 @@ class LoginService @Autowired constructor(private val loginDao: LoginDao, privat
 
     // 找回/重置密码
     @Transactional(propagation = Propagation.REQUIRED)
-    fun resetPassword(email: String): ResponseData {
+    fun resetPassword(username: String, email: String): ResponseData {
+        // 验证用户名与邮箱地址是否对应
+        if (!loginDao.existUsernameAndEmail(username, email))
+            return ResponseData.ExceptionEnum.NO_MAPPING_USER_AND_EMAIL.getResult()
         // 动态生成一个8位数的密码
         val password: String = ProjectCommonUtil.randomPassword()
         // 密码加密与本地更新

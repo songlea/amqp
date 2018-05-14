@@ -71,11 +71,19 @@
             <form id="resetPasswordForm" onkeydown="if(event.keyCode===13)return false;">
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="resetEmail" class="control-label">用户名</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+                            <input type="text" class="form-control" id="resetUsername" name="resetUsername"
+                                   placeholder="请输入您的注册用户名"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="resetEmail" class="control-label">邮箱地址</label>
                         <div class="input-group">
                             <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
-                            <input type="email" class="form-control" id="resetEmail" name="email"
-                                   placeholder="请输入邮箱地址"/>
+                            <input type="email" class="form-control" id="resetEmail" name="resetEmail"
+                                   placeholder="请输入您的注册邮箱地址"/>
                         </div>
                     </div>
                 </div>

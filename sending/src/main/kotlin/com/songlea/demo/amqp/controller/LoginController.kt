@@ -119,12 +119,14 @@ class LoginController @Autowired constructor(private val loginService: LoginServ
     // 找回密码(发送一个随机密码到邮箱)
     @ResponseBody
     @RequestMapping(value = ["/resetPassword"], method = [RequestMethod.POST])
-    fun resetPassword(email: String?): ResponseData {
-        if (email.isNullOrBlank())
+    fun resetPassword(resetUsername: String?, resetEmail: String?): ResponseData {
+        if (resetUsername.isNullOrBlank())
+            return ResponseData.ExceptionEnum.NO_USER_NAME.getResult()
+        if (resetEmail.isNullOrBlank())
             return ResponseData.ExceptionEnum.NO_EMAIL.getResult()
-        if (!emailPattern.matcher(email!!).matches())
+        if (!emailPattern.matcher(resetEmail!!).matches())
             return ResponseData.ExceptionEnum.INVALID_EMAIL.getResult()
         // 已非空验证
-        return loginService.resetPassword(email)
+        return loginService.resetPassword(resetUsername!!, resetEmail)
     }
 }

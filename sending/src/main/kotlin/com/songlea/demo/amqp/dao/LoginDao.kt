@@ -17,8 +17,7 @@ class LoginDao @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
 
     // 根据用户名与密码判断用户表是否有记录
     fun getUserByUsernameAndPass(username: String, password: String): UserModel? {
-        val list: List<UserModel> = jdbcTemplate.query(
-                "SELECT * FROM amqp_user where user_name = ? and password = ?",
+        val list: List<UserModel> = jdbcTemplate.query("SELECT * FROM amqp_user where user_name = ? and password = ?",
                 arrayOf(username, password), RowMapper { rs, _ ->
             val record = UserModel()
             record.id = rs.getInt("id")
@@ -50,5 +49,11 @@ class LoginDao @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
     fun resetPassword(email: String, password: String): Int {
         return jdbcTemplate.update("update amqp_user set password = ? where email = ?",
                 password, email)
+    }
+
+    // 校验用户名与邮箱是否对应
+    fun existUsernameAndEmail(username: String, email: String): Boolean {
+        return jdbcTemplate.queryForList("SELECT id FROM amqp_user where user_name = ? and email = ?",
+                username, email).size > 0
     }
 }

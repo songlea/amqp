@@ -25,6 +25,7 @@ data class ResponseData(var code: Int, var message: String?, var data: Any?) {
         INVALID_EMAIL(3, "邮箱地址格式不正确！"),
         // 找加/重置密码
         NO_REGISTER_EMAIL(3, "邮箱地址未被注册！"),
+        NO_MAPPING_USER_AND_EMAIL(3, "您输入的注册用户名与邮箱地址不对应！"),
         // 修改密码
         OVER_TIME_LOGIN(4, "登录已过期，请重新登录！"),
         SAME_PASSWORD(4, "新密码不能与旧密码相同！"),
