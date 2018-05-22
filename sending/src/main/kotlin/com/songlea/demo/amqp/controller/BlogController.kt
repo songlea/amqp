@@ -92,6 +92,6 @@ class BlogController @Autowired constructor(private val blogService: BlogService
                 ?: return ResponseData.ExceptionEnum.OVER_TIME_LOGIN.getResult()
         if (start == null || limit == null)
             return ResponseData.ExceptionEnum.NO_PAGE_PARAMS.getResult()
-        return blogService.selectArticles(userModel.id, start, limit)
+        return blogService.selectUserArticles(userModel.id, start, limit)
     }
 }

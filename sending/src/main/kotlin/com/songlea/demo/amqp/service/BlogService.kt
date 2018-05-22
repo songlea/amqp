@@ -22,10 +22,16 @@ class BlogService @Autowired constructor(private val blogDao: BlogDao) {
         return blogDao.saveArticle(title, content, userId)
     }
 
-    // 加载文章列表
+    // 加载文章列表(用户分页)
     @Transactional(readOnly = true)
-    fun selectArticles(userId: Int, start: Int, limit: Int): ResponseData {
-        return ResponseData(blogDao.selectArticles(userId, start, limit))
+    fun selectUserArticles(userId: Int, start: Int, limit: Int): ResponseData {
+        return ResponseData(blogDao.selectUserArticles(userId, start, limit))
+    }
+
+    // 加载所有文章列表
+    @Transactional(readOnly = true)
+    fun selectAllArticles(): List<ArticleModel> {
+        return blogDao.selectAllArticles()
     }
 
     // 加载文章具体的内容

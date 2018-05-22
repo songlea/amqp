@@ -68,7 +68,7 @@ $(function () {
         timeout: 10000,
         data: {
             start: 0,
-            limit: 10
+            limit: 20
         },
         success: function (content) {
             if (content && content.code === 0) {
@@ -76,6 +76,7 @@ $(function () {
                 for (var i = 0, length = data.length; i < length; i++) {
                     _html += "<div class='page-header'>" +
                         "<h4>" + data[i].title + "  <small>" + data[i].createTime + "</small></h4>" +
+                        "<p>作者：" + data[i].userName + "</p>" +
                         "<p><a class='btn btn-link' target='_blank' href='" + urlPath + "/articles/" + data[i].id + "' role='button'>&gt;&gt;&gt;查看详情</a></p>" +
                         "</div>";
                 }

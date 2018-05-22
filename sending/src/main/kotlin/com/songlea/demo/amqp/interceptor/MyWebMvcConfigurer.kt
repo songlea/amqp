@@ -27,7 +27,7 @@ class MyWebMvcConfigurer(@Autowired private val loginInterceptor: LoginIntercept
                 // 匹配需要拦截的请求
                 .addPathPatterns("/home/*", "/blog/*")
                 // 匹配不拦截的请求(登录界面请求)
-                .excludePathPatterns("/login/*", "/open/*", "/articles/*")
+                .excludePathPatterns("/login/*", "/open/*", "/articles/*", "/index")
     }
 
     // 过滤器
