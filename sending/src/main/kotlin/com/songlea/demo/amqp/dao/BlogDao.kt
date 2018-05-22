@@ -25,7 +25,7 @@ class BlogDao @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
     // 加载文章列表(用户加载需要分页)
     fun selectUserArticles(userId: Int, start: Int, limit: Int): List<ArticleModel> {
         return jdbcTemplate.query("SELECT a.id, a.title, a.create_time, u.user_name FROM amqp_article a," +
-                " amqp_user u where a.user_id = u.id and user_id = ? limit ?,?",
+                " amqp_user u where a.user_id = u.id and user_id = ? order by a.id desc limit ?,?",
                 arrayOf(userId, start, limit), RowMapper { rs, _ ->
             val record = ArticleModel()
             record.id = rs.getInt("id")
@@ -40,7 +40,7 @@ class BlogDao @Autowired constructor(private val jdbcTemplate: JdbcTemplate) {
     // 加载所有文章列表
     fun selectAllArticles(): List<ArticleModel> {
         return jdbcTemplate.query("SELECT a.id, a.title, a.create_time, u.user_name,a.user_id FROM amqp_article a," +
-                " amqp_user u where a.user_id = u.id", RowMapper { rs, _ ->
+                " amqp_user u where a.user_id = u.id order by a.id desc", RowMapper { rs, _ ->
             val record = ArticleModel()
             record.id = rs.getInt("id")
             record.title = rs.getString("title") ?: ProjectCommonUtil.DEFAULT_EMPTY
