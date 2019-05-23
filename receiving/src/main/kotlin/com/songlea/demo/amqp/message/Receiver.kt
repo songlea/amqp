@@ -29,7 +29,7 @@ class Receiver {
     // 只绑定对应的Queue名称,即从这个队列中获取消息
     @RabbitListener(queues = [AmqpReceivingApplication.TOPIC_QUEUE_NAME])
     // isDefault当为true时声明当有效载荷没有匹配的RabbitHandler时这是默认的回调方法,只能声明一个这样的方法
-    @RabbitHandler()
+    @RabbitHandler
     // 一个Message有两个部分：payload(有效载荷)和label(标签), payload顾名思义就是传输的数据
     // label是exchange的名字或者说是一个tag,它描述了payload,而且RabbitMQ也是通过这个label来决定把这个Message发给哪个Consumer
     fun handlePublishMessage(@Payload data: String?, message: Message, channel: Channel) {
@@ -49,7 +49,7 @@ class Receiver {
 
     // RPC调用的消费者
     @RabbitListener(queues = [AmqpReceivingApplication.RPC_QUEUE_NAME])
-    @RabbitHandler()
+    @RabbitHandler
     fun handleRpcMessage(@Payload data: String?, message: Message, channel: Channel): String {
         val receiverData: Student? = JSON.parseObject(data, Student::class.java)
         logger.info("Received rpc data: < $receiverData > & remove!")

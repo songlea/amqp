@@ -28,7 +28,7 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
              * 则所有的rabbitTemplate实际的ConfirmCallback为最后一次申明的ConfirmCallback。
              */
             // 消息是否到达交换机的回调
-            this.setConfirmCallback({ correlationData, ack, cause ->
+            this.setConfirmCallback { correlationData, ack, cause ->
                 run {
                     // https://stackoverflow.com/questions/40058613/how-to-configure-end-to-end-publisher-confirms-with-spring-amqp
                     // 只有在负责队列的Erlang进程中发生内部错误时才会传递basic.nack，这时参数ack才会为false。
@@ -42,7 +42,7 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
                     else
                         logger.info("Message【CorrelationData.id：${correlationData.id}】未到达Exchange：$cause")
                 }
-            })
+            }
 
             /**
              * ReturnCallback接口用于实现消息发送到RabbitMQ交换器，但无相应队列与交换器绑定时的回调。

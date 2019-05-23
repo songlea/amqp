@@ -34,7 +34,7 @@ class HomeController @Autowired constructor(private val scheduleSender: Schedule
     fun chat(message: String?): ResponseData {
         if (message.isNullOrBlank())
             return ResponseData.ExceptionEnum.NO_MESSAGE.getResult()
-        scheduleSender.sendChatMessage(message!!)
+        scheduleSender.sendChatMessage(message)
         // 将完成时间返回到前台
         return ResponseData(SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()))
     }
@@ -57,11 +57,11 @@ class HomeController @Autowired constructor(private val scheduleSender: Schedule
             return ResponseData.ExceptionEnum.NO_OLD_PASSWORD.getResult()
         if (newPassword.isNullOrEmpty())
             return ResponseData.ExceptionEnum.NO_NEW_PASSWORD.getResult()
-        if (newPassword!!.length < 6)
+        if (newPassword.length < 6)
             return ResponseData.ExceptionEnum.SHORT_PASSWORD.getResult()
         // 从session中获取登录用户
         val userModel: UserModel = request.session.getAttribute(ResponseData.USER_MODEL) as? UserModel
                 ?: return ResponseData.ExceptionEnum.OVER_TIME_LOGIN.getResult()
-        return loginService.updatePassword(request, userModel, oldPassword!!, newPassword)
+        return loginService.updatePassword(request, userModel, oldPassword, newPassword)
     }
 }

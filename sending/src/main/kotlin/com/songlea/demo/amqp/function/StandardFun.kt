@@ -3,7 +3,7 @@ package com.songlea.demo.amqp.function
 import java.io.File
 
 // 通用的扩展标准函数run,with,let,also,apply,takeUnless,takeIf和repeat(Standard.kt文件中)
-fun main(args: Array<String>) {
+fun main() {
     testScope()
     testRun()
     testApply()
@@ -58,9 +58,9 @@ fun testLet() {
     // 调用某对象的let函数，则该对象为函数的参数，在函数块内可以通过 it 指代该对象。返回值为函数块的最后一行或指定return表达式
     // 函数定义：public inline fun <T, R> T.let(block: (T) -> R): R
     val original = "abc"
-    original.let {
-        println("The original String is $it") // "abc"
-        it.reversed().repeat(1).takeIf { it.contains("c", true) }
+    original.let { s ->
+        println("The original String is $s") // "abc"
+        s.reversed().repeat(1).takeIf { it.contains("c", true) }
     }.let {
         println("The reverse String is $it") // "cba"
         it?.length ?: 0
@@ -117,10 +117,10 @@ fun testTaskUnless() {
 fun testRepeat() {
     // 重复执行action times次,action每次传入的参数为times的遍历值
     // 函数定义：public inline fun repeat(times: Int, action: (Int) -> Unit)
-    repeat(4, {
+    repeat(4) {
         println("time $it")
-    })
+    }
 }
 
-fun makeDir(path: String) = path.let { File(it) }.also { it.mkdirs() }
+fun makeDir(path: String) = File(path).also { it.mkdirs() }
 

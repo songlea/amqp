@@ -32,7 +32,7 @@ class MessageController(@Autowired private val simpMessagingTemplate: SimpMessag
 
     // 监听RabbitMQ的指定队列并消费消息
     @RabbitListener(queues = [AmqpReceivingApplication.CHAT_QUEUE_NAME])
-    @RabbitHandler()
+    @RabbitHandler
     fun getMessage(@Payload data: String?, message: Message, channel: Channel) {
         // 将从RabbitMQ中接收的数据通过WebSocket推送到界面
         simpMessagingTemplate.convertAndSend(WebSocketConfig.TOPIC_REQUIRE, data ?: "")

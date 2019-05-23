@@ -50,7 +50,7 @@ object ProjectCommonUtil {
 
     // 发送邮件
     fun mailNotice(mailSender: JavaMailSender, from: String, emails: Array<String>, subject: String, text: String) {
-        threadPoolExecutor.execute({
+        threadPoolExecutor.execute {
             Thread.currentThread().setUncaughtExceptionHandler { _, e -> Logger.error("异步发送邮件异常！", e) }
             val message = SimpleMailMessage()
             message.setFrom(from)
@@ -59,7 +59,7 @@ object ProjectCommonUtil {
             message.setText(text)
             mailSender.send(message)
             Logger.info("异步发送邮件成功，收件人：{}", emails.joinToString())
-        })
+        }
     }
 
     // 随机密码,默认8位(字母加数字)

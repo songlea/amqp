@@ -67,7 +67,7 @@ class BlogController @Autowired constructor(private val blogService: BlogService
     fun publish(request: HttpServletRequest, blogTitle: String?, blogContent: String?): ResponseData {
         if (blogTitle.isNullOrBlank())
             return ResponseData.ExceptionEnum.NO_BLOG_TITLE.getResult()
-        if (blogTitle!!.length > 64)
+        if (blogTitle.length > 64)
             return ResponseData.ExceptionEnum.LONG_BLOG_TITLE.getResult()
         if (blogContent.isNullOrBlank())
             return ResponseData.ExceptionEnum.NO_BLOG_CONTENT.getResult()
@@ -76,7 +76,7 @@ class BlogController @Autowired constructor(private val blogService: BlogService
         val userModel: UserModel = request.session.getAttribute(ResponseData.USER_MODEL) as? UserModel
                 ?: return ResponseData.ExceptionEnum.OVER_TIME_LOGIN.getResult()
         // 已非空验证
-        return if (blogService.saveArticle(blogTitle, blogContent!!, userModel.id) > 0) {
+        return if (blogService.saveArticle(blogTitle, blogContent, userModel.id) > 0) {
             ResponseData(null)
         } else {
             ResponseData.ExceptionEnum.EXCEPTION_SYSTEM_BUSY.getResult()
