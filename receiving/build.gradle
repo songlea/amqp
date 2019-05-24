@@ -23,6 +23,8 @@ compileTestKotlin {
 }
 
 dependencies {
+    // 协程测试
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1'
     compile('org.springframework.boot:spring-boot-starter-amqp')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-websocket')
