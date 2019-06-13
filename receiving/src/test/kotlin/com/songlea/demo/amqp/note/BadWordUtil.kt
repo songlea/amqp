@@ -1,5 +1,6 @@
 package com.songlea.demo.amqp.note
 
+import com.hankcs.hanlp.HanLP
 import com.songlea.demo.amqp.trie.AhoCorasickDoubleArrayTrie
 import java.io.File
 import java.util.*
@@ -57,10 +58,13 @@ fun main() {
         println("begin:$begin; end:$end; value:$value")
     })
     */
+    /*
     val result: List<AhoCorasickDoubleArrayTrie.Hit<String>> = ahoCorasickDoubleArrayTrie.parseText(text)
     result.forEach {
         text = text.replaceRange(IntRange(it.begin, it.end), "*".repeat(it.end - it.begin + 1))
     }
     println(text)
+     */
+    println(HanLP.segment(text))
     println("take times:${System.currentTimeMillis() - start}")
 }

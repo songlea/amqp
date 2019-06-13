@@ -33,6 +33,7 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
     compile group: 'com.alibaba', name: 'fastjson', version: "$rootProject.fastJsonVersion" // 版本引用必须用又引号
+    compile('com.hankcs:hanlp:portable-1.7.3')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
