@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON
 import com.songlea.demo.amqp.AmqpSendingApplication
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.rabbit.connection.CorrelationData
 import org.springframework.amqp.rabbit.core.RabbitTemplate
-import org.springframework.amqp.rabbit.support.CorrelationData
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
@@ -38,9 +38,9 @@ class ScheduleSender(@Autowired private val rabbitTemplate: RabbitTemplate) {
                     // 如果想要发布者与消费者之间的紧密耦合，可以使用Spring Remoting(RPC) Over RabbitMQ，这时消费者引发异常，
                     // 它将被传播回发布者。(该机制仅支持Java Serializable对象)
                     if (ack)
-                        logger.info("Message【CorrelationData.id：${correlationData.id}】成功到达Exchange")
+                        logger.info("Message【CorrelationData.id：${correlationData?.id}】成功到达Exchange")
                     else
-                        logger.info("Message【CorrelationData.id：${correlationData.id}】未到达Exchange：$cause")
+                        logger.info("Message【CorrelationData.id：${correlationData?.id}】未到达Exchange：$cause")
                 }
             }
 
